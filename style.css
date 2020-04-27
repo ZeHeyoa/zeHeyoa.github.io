@@ -9,7 +9,8 @@ html {
 	text-size-adjust: 100%;
 	text-rendering: optimizeLegibility;
 	-webkit-tap-highlight-color: transparent;
-	box-sizing: border-box
+	box-sizing: border-box;
+	background-color : gold;
 }
 
 html *,
@@ -250,7 +251,7 @@ input[type=search] {
 	-webkit-appearance: textfield;
 	outline-offset: -.2rem
 }
-o
+
 input[type=search]::-webkit-search-cancel-button,
 input[type=search]::-webkit-search-decoration {
 	-webkit-appearance: none
@@ -433,18 +434,18 @@ html[data-scroll-lock=true] body {
 
 html ::-moz-selection {
 	color: #fff;
-	background-color: #212529
+	background-color: gold
 }
 
 html ::selection {
 	color: #fff;
-	background-color: #212529
+	background-color: gold
 }
 
 body {
 	cursor: url(https://shopify.github.io/draggable/assets/img/cursor-auto.png), auto;
 	position: relative;
-	background-color: #fff
+	background-color: rgba(70,70,70,1);
 }
 
 @media screen and (min-width:960px) {
@@ -1730,7 +1731,7 @@ a.NavLink:active {
 @media screen and (min-width:768px) {
 	.BlockContent {
 		min-height: 8.8rem;
-		border-width: .8rem
+		border-width: .1rem
 	}
 }
 
@@ -1822,22 +1823,22 @@ a.NavLink:active {
 }
 
 .Block--typeStripes .BlockContent {
-	background-image: repeating-linear-gradient(-45deg, brown, var(--pattern-bg-color) 40%, red 0, black 50%, var(--pattern-bg-color) 0);
-	background-size: .8rem .8rem;
+	//background-image: repeating-linear-gradient(-45deg, brown, var(--pattern-bg-color) 40%, red 0, black 50%, var(--pattern-bg-color) 0);
+	//background-size: .8rem .8rem;
 	color: #212529;
-	border-color: gold;
-	transition: color .12s cubic-bezier(.64, 0, .35, 1)
+	//border-color: gold;
+	//transition: color .12s cubic-bezier(.64, 0, .35, 1)
 }
 
 .Block--typeStripes  .ligneNoire {
 
 	//background-image: repeating-linear-gradient(-45deg, black, black, black 0, black 50%, black 0);
-	background-image: linear-gradient(45deg, #e7f5a1 2.38%, #000000 2.38%, #000000 50%, #e7f5a1 50%, #e7f5a1 52.38%, #000000 52.38%, #000000 100%);
+	//background-image: linear-gradient(45deg, #e7f5a1 2.38%, #000000 2.38%, #000000 50%, #e7f5a1 50%, #e7f5a1 52.38%, #000000 52.38%, #000000 100%);
 	
-	background-size: .8rem .8rem;
+	//background-size: .8rem .8rem;
 	color: #212529;
-	border-color: gold;
-	transition: color .12s cubic-bezier(.64, 0, .35, 1)
+	//border-color: gold;
+	//transition: color .12s cubic-bezier(.64, 0, .35, 1)
 }
 
 .Block--isDraggable {
@@ -2650,12 +2651,12 @@ a.NavLink:active {
 
 .Plate--isDraggable .PlateContent {
 	background-color: #fff;
-	border: 2.5vw solid gold
+	border: .5vw solid gold
 }
 
 @media screen and (min-width:960px) {
 	.Plate--isDraggable .PlateContent {
-		border-width: 1.6rem
+		border-width: .6rem
 	}
 }
 
@@ -2868,7 +2869,7 @@ a.NavLink:active {
 
 @media screen and (min-width:768px) {
 	.StackedListContent {
-		border-width: .8rem
+		border-width: .2rem
 	}
 }
 
@@ -3201,7 +3202,7 @@ a.NavLink:active {
 .UniqueDropzone .BlockLayout .BlockWrapper .Block:nth-child(1n+15):not(.draggable-source--is-dragging) {
 	min-height: 0;
 	height: 0;
-	background-color: red;
+	//background-color: red;
 }
 
 .UniqueDropzone .BlockLayout--typeFlex .BlockWrapper {
@@ -3218,7 +3219,7 @@ a.NavLink:active {
 
 	background-color: rgba(0,0,0,0);
 	grid-template-rows: repeat(1, 1fr);
-		grid-template-columns: repeat(13, 0.01fr);
+		grid-template-columns: repeat(13, 1fr);
 		grid-template-areas: "a b c d e f g h i j k l m";
 	margin-top: 0rem;
 	border: 0rem solid #212529;
@@ -3229,7 +3230,7 @@ a.NavLink:active {
 	.UniqueDropzone .BlockLayout--typeGrid {
 		
 	background-color:  rgba(0,0,0,0);
-		grid-template-columns: repeat(13, .05fr);
+		grid-template-columns: repeat(13, 1fr);
 		grid-template-areas: "a b c d e f g h i j k l m";
 		margin-top: 0rem;
 		border-width: 0rem
@@ -3239,23 +3240,23 @@ a.NavLink:active {
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper--isDropzone:before {
 	content: "";
 	position: absolute;
-	top: -.1rem;
-	right: .1rem;
-	bottom: .1rem;
-	left: -.1rem;
+	top:  0rem;
+	right: 0rem;
+	bottom: 0rem;
+	left: 0rem;
 	display: block;
 	pointer-events: none;
-	background-color: gold;
+	//background-color: gold;
 	opacity: 0;
 	transition: opacity .12s cubic-bezier(.64, 0, .35, 1)
 }
 
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper--isDropzone:before {
-		top: -.01rem;
-		right: .1rem;
-		bottom: .1rem;
-		left: -.01rem
+		top: 0rem;
+		right: 0rem;
+		bottom: 0rem;
+		left: 0rem;
 	}
 }
 
@@ -3314,37 +3315,11 @@ a.NavLink:active {
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(12) {
 	grid-area: l
 }
-/*
+
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(13) {
 	grid-area: m
 }
 
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(14) {
-	grid-area: n
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(15) {
-	grid-area: o
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(16) {
-	grid-area: p
-}
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(17) {
-	grid-area: q
-}
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(18) {
-	grid-area: r
-}
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(19) {
-	grid-area: s
-}
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(20) {
-	grid-area: t
-}
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(21) {
-	grid-area: u
-}*/
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeFlex .BlockContent {
 		min-height: 13.6rem
@@ -3359,13 +3334,13 @@ a.NavLink:active {
 
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 8.8rem
+		min-height: 13rem
 	}
 }
 
 @media screen and (min-width:1440px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 9rem
+		min-height: 13.95rem
 	}
 }
 
