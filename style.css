@@ -3319,7 +3319,17 @@ a.NavLink:active {
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(13) {
 	grid-area: m
 }
+@media screen and (min-width:312px) {
+	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
+		min-height: 2rem
+	}
+}
 
+@media screen and (min-width:612px) {
+	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
+		min-height: 6rem
+	}
+}
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeFlex .BlockContent {
 		min-height: 13.6rem
