@@ -3323,7 +3323,7 @@ a.NavLink:active {
 
 @media screen and (min-width:760px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 6.65rem
+		min-height: 4.65rem
 	}
 }
 
@@ -3337,7 +3337,7 @@ a.NavLink:active {
 
 @media screen and (min-width:1024px) and (min-height:730px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 12.95rem
+		min-height: 13.95rem
 	}
 }
 
