@@ -3319,33 +3319,27 @@ a.NavLink:active {
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(13) {
 	grid-area: m
 }
-@media screen and (min-width:400px) {
+@media screen and (min-width:288px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 3rem
+		min-height: 2.95rem
 	}
 }
 
-@media screen and (min-width:512px) {
+@media screen and (min-width:672px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 6rem
+		min-height: 4.95rem
 	}
 }
 
-@media screen and (min-width:650px) {
+@media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 8rem
+		min-height: 7.95rem
 	}
 }
 
-@media screen and (min-width:750px) {
+@media screen and (min-width:1056px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 10rem
-	}
-}
-
-@media screen and (min-width:850px) {
-	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 13.1rem
+		min-height: 10.95rem
 	}
 }
 
@@ -3354,6 +3348,7 @@ a.NavLink:active {
 		min-height: 13.95rem
 	}
 }
+
 .SimpleList {
 	margin-left: auto;
 	margin-right: auto;
