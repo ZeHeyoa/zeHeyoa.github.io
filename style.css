@@ -834,12 +834,14 @@ a.SvgContainer {
 }
 
 .Pattern--typeStripes {
-	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, gold 0, gold 50%, var(--pattern-bg-color) 0);
+	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, grey 0, grey 50%, var(--pattern-bg-color) 0);
 	background-size: .8rem .8rem
 }
 
 .Pattern--typeHalftone {
-	background-image: radial-gradient(gold 24%, transparent 25%), radial-gradient(gold 24%, transparent 25%);
+	//background-image: radial-gradient(grey 24%, transparent 25%), radial-gradient(grey 24%, transparent 25%);
+	background-image: linear-gradient(45deg, grey 2.38%, #000000 2.38%, #000000 50%, grey 50%, grey 52.38%, #000000 52.38%, #000000 100%);
+
 	background-position: 0 0, .6rem .6rem;
 	background-size: 1.2rem 1.2rem;
 	-webkit-animation: halftone .48s steps(3) infinite both paused;
@@ -3321,31 +3323,36 @@ a.NavLink:active {
 }
 
 
-@media screen and (min-width:760px) {
+/*telephone */
+@media screen and (min-width:360px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 4.65rem
+		min-height: 3.65rem
+	}
+}
+
+/* tablette */
+@media screen and (min-width:900px ){
+	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
+		min-height: 12.3rem
 	}
 }
 
 
-@media screen and (min-width:1330px ) and ( min-height:530px) {
+/* pc portable */
+@media screen and (min-width:1440px)  and ( min-height:600px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
 		min-height: 10.3rem
 	}
 }
 
-
-@media screen and (min-width:1024px) and (min-height:730px) {
+/* ecran 16:9 */
+@media screen and (min-width:1440px )  and ( min-height:800px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
 		min-height: 13.95rem
 	}
 }
 
-@media screen and (min-width:1124px) and (min-height:730px) {
-	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 13.95rem
-	}
-}
+
 
 .SimpleList {
 	margin-left: auto;
