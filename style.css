@@ -3324,7 +3324,7 @@ a.NavLink:active {
 
 
 /*telephone */
-@media screen and (min-width:560px) {
+@media screen and (min-width:770px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
 		min-height: 3.65rem
 	}
@@ -3333,7 +3333,7 @@ a.NavLink:active {
 /* tablette */
 @media screen and (min-width:900px ){
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 10.3rem
+		min-height: 9.7rem
 	}
 }
 
