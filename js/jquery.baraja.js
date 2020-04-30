@@ -165,7 +165,7 @@ jQuery.fn.reverse = [].reverse;
 
 			if( this.options.nextEl !== '' ) {
 
-				$( this.options.nextEl ).on( 'click.baraja', function() {
+				$( this.options.nextEl ).on( 'click.baraja touchstart.baraja', function() {
 
 					self._navigate( 'next' );
 					return false;
@@ -176,7 +176,7 @@ jQuery.fn.reverse = [].reverse;
 
 			if( this.options.prevEl !== '' ) {
 
-				$( this.options.prevEl ).on( 'click.baraja', function() {
+				$( this.options.prevEl ).on( 'click.baraja touchstart.baraja', function() {
 
 					self._navigate( 'prev' );
 					return false;
@@ -185,7 +185,7 @@ jQuery.fn.reverse = [].reverse;
 
 			}
 
-			this.$el.on( 'click.baraja', 'li', function() {
+			this.$el.on( 'click.baraja touchstart.baraja', 'li', function() {
 
 				if( !self.isAnimating ) {
 
