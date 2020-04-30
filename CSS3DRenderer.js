@@ -8,7 +8,7 @@ import {
 	Matrix4,
 	Object3D,
 	Vector3
-} from "/carte/three.module.js";
+} from "./three.module.js";
 
 var CSS3DObject = function ( element ) {
 
