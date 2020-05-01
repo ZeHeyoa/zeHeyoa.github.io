@@ -37,3 +37,17 @@ ul.baraja-container li {
 	height: 310px;
 	margin: 10px;
 }
+
+.BlockContent {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
+	position: relative;
+	min-height: 8.6rem;
+	height: 100%;
+	color: transparent;
+	background-color: #212529;
+	border: .6rem solid #212529
+}
