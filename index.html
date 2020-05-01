@@ -4,6 +4,7 @@
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		  <link rel="stylesheet" href="css/style.css">
 				<link rel="stylesheet" type="text/css" href="css/baraja.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
@@ -86,13 +87,9 @@
 	</head>
 	<body>
 
-		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> css3d - periodic table.</div>
 		<div id="container"></div>
 		<div id="menu">
-			<button id="table">TABLE</button>
-			<button id="sphere">SPHERE</button>
-			<button id="helix">HELIX</button>
-			<button id="grid">GRID</button>
+			<button id="table" hidden>TABLE</button>
 		</div>
 
 		<script type="module">
@@ -228,7 +225,7 @@
 			var controls;
 
 			var objects = [];
-			var targets = { table: [], sphere: [], helix: [], grid: [] };
+			var targets = { table: []};
 
 			init();
 			animate();
@@ -236,16 +233,23 @@
 			function init() {
 
 				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 3000;
+				camera.position.z = 1500;
+			    camera.position.y = -3000;
 
 				scene = new THREE.Scene();
 
 				// table
 
+	            var groupe = document.createElement( 'div' );
+				groupe.id = 'UniqueDropzone';
+					var object = new CSS3DObject( groupe );
+					scene.add( object );
+					
 				for ( var i = 0; i < table.length; i += 5 ) {
 
 					var element = document.createElement( 'div' );
-					element.className = 'element';
+					element.className = 'element BlockWrapper--isDropzone';
+					element.dataset.dropzone = 'attaque1';
 					element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
 
 					var number = document.createElement( 'div' );
@@ -262,6 +266,7 @@
 					details.className = 'details';
 					details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
 					element.appendChild( details );
+					groupe.appendChild( element );
 //element.innerHTML = "<iframe width='100' height='200' src='https://www.youtube.com/embed/6v2L2UGZJAM' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
 					var object = new CSS3DObject( element );
 					object.position.x = Math.random() * 4000 - 2000;
@@ -281,34 +286,36 @@
 
 				}
 
+			
 								var c = "<section class='main'>"
 				+ "<div class='baraja-demo'>"
-				+ "	<ul id='baraja-el' class='baraja-container'>"
-				+ "		<li><img src='images/1.jpg' alt='image1'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></li>"
-				+ "		<li><img src='images/2.jpg' alt='image2'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></li>"
-				+ "		<li><img src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></li>"
-				+ "		<li><img src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></li>"
-				+ "		<li><img src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan.</p></li>"
-				+ "		<li><img src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></li>"
-				+ "		<li><img src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></li>"
-				+ "		<li><img src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></li>"
-				+ "		<li><img src='images/9.jpg' alt='image9'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></li>"
-				+ "		<li><img src='images/10.jpg' alt='image10'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></li>"
-				+ "		<li><img src='images/11.jpg' alt='image11'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></li>"
-				+ "		<li><img src='images/12.jpg' alt='image12'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></li>"
-				+ "		<li><img src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></li>"
-				+ "		<li><img src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></li>"
-				+ "		<li><img src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan .</p></li>"
-				+ "		<li><img src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></li>"
-				+ "		<li><img src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></li>"
-				+ "		<li><img src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></li>"
+				+ "	<ul id='baraja-el' class='baraja-container BlockLayout'>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/1.jpg' alt='image1'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/2.jpg' alt='image2'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/9.jpg' alt='image9'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/10.jpg' alt='image10'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/11.jpg' alt='image11'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/12.jpg' alt='image12'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan .</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></div></a></li>"
+				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img  src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></div></a></li>"
 				+ "	</ul>"
-				+ "</div>"
 				+ "<nav class='actions light'>"
 				+ "	<span id='nav-prev'>&lt;</span>"
 				+ "	<span id='nav-next'>&gt;</span>"
+				+ "	<span id='open'>O</span>"
 				+ "</nav>"
-				+ "<nav class='actions'>"
+				+ "</div>"
+				/*+ "<nav class='actions'>"
 				+ "	<span id='nav-fan'>Fan right</span>"
 				+ "	<span id='nav-fan2'>Fan left</span>"
 				+ "	<span id='nav-fan3'>Fan right (asym.)</span>"
@@ -324,7 +331,7 @@
 				+ "	<span id='nav-fanOther3'>other</span>"
 				+ "	<span id='nav-fanOther4'>other...</span>"
      			+ "	<span id='add'>Add items</span>"
-				+ "</nav>"
+				+ "</nav>"*/
 			    + "</section>";
 				
 				var element = document.createElement( 'div' );
@@ -347,68 +354,6 @@ object.position.z =  0;
 object.rotation.x =  0.5;
 					targets.table.push( object );
 				
-
-				
-				// sphere
-
-				var vector = new THREE.Vector3();
-
-				for ( var i = 0, l = objects.length; i < l; i ++ ) {
-
-					var phi = Math.acos( - 1 + ( 2 * i ) / l );
-					var theta = Math.sqrt( l * Math.PI ) * phi;
-
-					var object = new THREE.Object3D();
-
-					object.position.setFromSphericalCoords( 800, phi, theta );
-
-					vector.copy( object.position ).multiplyScalar( 2 );
-
-					object.lookAt( vector );
-
-					targets.sphere.push( object );
-
-				}
-
-				// helix
-
-				var vector = new THREE.Vector3();
-
-				for ( var i = 0, l = objects.length; i < l; i ++ ) {
-
-					var theta = i * 0.175 + Math.PI;
-					var y = - ( i * 8 ) + 450;
-
-					var object = new THREE.Object3D();
-
-					object.position.setFromCylindricalCoords( 900, theta, y );
-
-					vector.x = object.position.x * 2;
-					vector.y = object.position.y;
-					vector.z = object.position.z * 2;
-
-					object.lookAt( vector );
-
-					targets.helix.push( object );
-
-				}
-
-				// grid
-
-				for ( var i = 0; i < objects.length; i ++ ) {
-
-					var object = new THREE.Object3D();
-
-					object.position.x = ( ( i % 5 ) * 400 ) - 800;
-					object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
-					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
-
-					targets.grid.push( object );
-
-				}
-
-				//
-
 				renderer = new CSS3DRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.getElementById( 'container' ).appendChild( renderer.domElement );
@@ -418,7 +363,7 @@ object.rotation.x =  0.5;
 				controls = new TrackballControls( camera, renderer.domElement );
 				controls.minDistance = 500;
 				controls.maxDistance = 6000;
-				controls.addEventListener( 'change', render );
+				//controls.addEventListener( 'change', render );
 
 				var button = document.getElementById( 'table' );
 				button.addEventListener( 'click', function () {
@@ -427,33 +372,12 @@ object.rotation.x =  0.5;
 
 				}, false );
 
-				var button = document.getElementById( 'sphere' );
-				button.addEventListener( 'click', function () {
-
-					transform( targets.sphere, 2000 );
-
-				}, false );
-
-				var button = document.getElementById( 'helix' );
-				button.addEventListener( 'click', function () {
-
-					transform( targets.helix, 2000 );
-
-				}, false );
-
-				var button = document.getElementById( 'grid' );
-				button.addEventListener( 'click', function () {
-
-					transform( targets.grid, 2000 );
-
-				}, false );
-
 				transform( targets.table, 2000 );
 
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
-
+loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 			}
 
 			function transform( targets, duration ) {
@@ -757,5 +681,34 @@ object.rotation.x =  0.5;
 
 			});
 		</script>
+		  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/draggable.bundle.js"></script>
+<script>
+
+ function loadDraggable(containers) {
+ 
+  //const containers = $('#UniqueDropzone').get();
+  const droppable = new Draggable.Droppable(containers, {
+    draggable: '.Block--isDraggable',
+    dropzone: '.BlockWrapper--isDropzone',
+    mirror: {
+      constrainDimensions: true,
+    },
+  });
+
+  let droppableOrigin;
+
+  // --- Draggable events --- //
+  droppable.on('drag:start', (evt) => {
+    droppableOrigin = evt.originalSource.parentNode.dataset.dropzone;
+  });
+
+  droppable.on('droppable:dropped', (evt) => {
+    if (!droppableOrigin.split(";").includes(evt.dropzone.dataset.dropzone)) {
+      evt.cancel();
+    }
+  });
+}
+
+</script>
 	</body>
 </html>
