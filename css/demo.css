@@ -146,7 +146,7 @@ a {
 
 .actions {
 	width: 100%;
-	padding: 0 0 20px 0;
+	padding: 8px 0px 20px 0;
 }
 
 .actions span {
@@ -182,7 +182,7 @@ a {
 }
 
 .light {
-	padding: 60px 0 250px;
+	margin: 0px 0px 0px;
 }
 
 .light span {
@@ -196,9 +196,9 @@ a {
 	background: #444;
 }
 
-#nav-prev, #nav-next {
-	width: 30px;
-	height: 30px;
+#nav-prev, #nav-next, #open {
+	width: 50px;
+	height: 50px;
 	font-size: 18px;
 	line-height: 20px;
 }
