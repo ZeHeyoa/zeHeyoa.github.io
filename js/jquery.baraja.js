@@ -184,8 +184,19 @@ jQuery.fn.reverse = [].reverse;
 				} );
 
 			}
+			
+			
 
-			this.$el.on( 'click.baraja touchstart.baraja', 'li', function() {
+				$( '#open' ).on( 'click.baraja touchstart.baraja', function() {
+
+					self.fan();
+					return false;
+
+				} );
+
+			
+
+		/*	this.$el.on( 'click.baraja touchstart.baraja', 'li', function() {
 
 				if( !self.isAnimating ) {
 
@@ -193,7 +204,7 @@ jQuery.fn.reverse = [].reverse;
 
 				}
 
-			} );
+			} );*/
 
 		},
 		_resetTransition : function( $el ) {
