@@ -4,12 +4,12 @@
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<!--	  <link rel="stylesheet" href="css/style.css">
+		  <link rel="stylesheet" href="css/style.css">
 				<link rel="stylesheet" type="text/css" href="css/baraja.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
 		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-		<link type="text/css" rel="stylesheet" href="main.css"> -->
+		<link type="text/css" rel="stylesheet" href="main.css">
 		<style>
 			a {
 				color: #8ff;
@@ -33,16 +33,11 @@
 				cursor: default;
 			}
 
-		
-  .element:hover {
-    box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 				border: 1px solid rgba(127,255,255,0.75);
-  }
-			
-.element:active, .element:focus, .element:touch {
-box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-				border: 1px solid rgba(127,255,255,0.75);
-}
+			}
+
 				.element .number {
 					position: absolute;
 					top: 20px;
@@ -245,10 +240,10 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 
 				// table
 
-	        /*    var groupe = document.createElement( 'div' );
+	            var groupe = document.createElement( 'div' );
 				groupe.id = 'UniqueDropzone';
 					var object = new CSS3DObject( groupe );
-					scene.add( object );*/
+					scene.add( object );
 					
 				for ( var i = 0; i < table.length; i += 5 ) {
 
@@ -271,7 +266,7 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 					details.className = 'details';
 					details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
 					element.appendChild( details );
-					//groupe.appendChild( element );
+					groupe.appendChild( element );
 //element.innerHTML = "<iframe width='100' height='200' src='https://www.youtube.com/embed/6v2L2UGZJAM' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
 					var object = new CSS3DObject( element );
 					object.position.x = Math.random() * 4000 - 2000;
@@ -281,7 +276,7 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 
 					objects.push( object );
 
-					
+					//
 
 					var object = new THREE.Object3D();
 					object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
@@ -291,7 +286,8 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 
 				}
 
-				/* var c = "<section class='main'>"
+			
+								var c = "<section class='main'>"
 				+ "<div class='baraja-demo'>"
 				+ "	<ul id='baraja-el' class='baraja-container BlockLayout'>"
 				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/1.jpg' alt='image1'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
@@ -318,7 +314,7 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 				+ "	<span id='nav-next'>&gt;</span>"
 				+ "	<span id='open'>O</span>"
 				+ "</nav>"
-				+ "</div>"*/
+				+ "</div>"
 				/*+ "<nav class='actions'>"
 				+ "	<span id='nav-fan'>Fan right</span>"
 				+ "	<span id='nav-fan2'>Fan left</span>"
@@ -335,10 +331,10 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 				+ "	<span id='nav-fanOther3'>other</span>"
 				+ "	<span id='nav-fanOther4'>other...</span>"
      			+ "	<span id='add'>Add items</span>"
-				+ "</nav>"*/ /*
+				+ "</nav>"*/
 			    + "</section>";
 				
-			/*	var element = document.createElement( 'div' );
+				var element = document.createElement( 'div' );
 					element.className = 'container';
 					element.innerHTML = c;
 				var object = new CSS3DObject( element );
@@ -349,7 +345,7 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 
 					objects.push( object );
 
-		
+					//
 
 					var object = new THREE.Object3D();
 					object.position.x = 0;
@@ -357,7 +353,7 @@ box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
 object.position.z =  0;
 object.rotation.x =  0.5;
 					targets.table.push( object );
-				*/
+				
 				renderer = new CSS3DRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.getElementById( 'container' ).appendChild( renderer.domElement );
@@ -381,7 +377,7 @@ object.rotation.x =  0.5;
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
-//loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
+loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 			}
 
 			function transform( targets, duration ) {
@@ -447,12 +443,12 @@ object.rotation.x =  0.5;
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.baraja.js"></script>
         <script type="text/javascript">	
-		/*	$(function() {
+			$(function() {
 
 				var $el = $( '#baraja-el' ),
 					baraja = $el.baraja();
 
-				
+				// navigation
 				$( '#nav-prev' ).on( 'click touchstart', function( event ) {
 
 					baraja.previous();
@@ -465,7 +461,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-				
+				// simple fan
 				$( '#nav-fan' ).on( 'click touchstart', function( event ) {
 
 					baraja.fan( {
@@ -493,7 +489,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-				
+				// more realistic fan: without common origin (means the origin changes / increments by card )
 				$( '#nav-fan3' ).on( 'click touchstart', function( event ) {
 
 					baraja.fan( {
@@ -522,7 +518,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-				
+				// playing with different origins and ranges	
 				$( '#nav-fan5' ).on( 'click touchstart', function( event ) {
 
 					baraja.fan( {
@@ -549,7 +545,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-				
+				// center false, playing with translation
 				$( '#nav-fan7' ).on( 'click touchstart', function( event ) {
 
 					baraja.fan( {
@@ -578,7 +574,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-			
+				// using scatter : true
 				$( '#nav-fan9' ).on( 'click touchstart', function( event ) {
 
 					baraja.fan( {
@@ -663,14 +659,14 @@ object.rotation.x =  0.5;
 				
 				} );
 
-				
+				// close the baraja
 				$( '#close' ).on( 'click touchstart', function( event ) {
 
 					baraja.close();
 				
 				} );
 
-				
+				// example of how to add more items
 				$( '#add' ).on( 'click touchstart', function( event ) {
 
 					if( $( this ).hasClass( 'disabled' ) ) {
@@ -683,7 +679,7 @@ object.rotation.x =  0.5;
 				
 				} );
 
-			}); */
+			});
 		</script>
 		  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/draggable.bundle.js"></script>
 <script>
@@ -691,7 +687,7 @@ object.rotation.x =  0.5;
  function loadDraggable(containers) {
  
   //const containers = $('#UniqueDropzone').get();
-/*  const droppable = new Draggable.Droppable(containers, {
+  const droppable = new Draggable.Droppable(containers, {
     draggable: '.Block--isDraggable',
     dropzone: '.BlockWrapper--isDropzone',
     mirror: {
@@ -700,17 +696,33 @@ object.rotation.x =  0.5;
   });
 
   let droppableOrigin;
-
-  
+  let baliseOrigin;
+  // --- Draggable events --- //
   droppable.on('drag:start', (evt) => {
     droppableOrigin = evt.originalSource.parentNode.dataset.dropzone;
+	baliseOrigin = evt.originalSource.parentNode;
   });
 
   droppable.on('droppable:dropped', (evt) => {
-    if (!droppableOrigin.split(";").includes(evt.dropzone.dataset.dropzone)) {
+
+	if (!droppableOrigin.split(";").includes(evt.dropzone.dataset.dropzone)) {
       evt.cancel();
-    }
-  });*/
+    } else {
+    //$(baliseOrigin).remove(); 
+}	
+  });
+  
+    droppable.on('drag:stop', (evt) => {
+	
+	if (evt.data.originalSource.parentNode.childElementCount == 2) {
+	    $(baliseOrigin).remove(); 
+			var $el = $( '#baraja-el' ),
+					baraja = $el.baraja();
+		baraja.itemsCount -= 1;
+	}
+	
+
+  });  
 }
 
 </script>
