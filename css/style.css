@@ -9,8 +9,7 @@ html {
 	text-size-adjust: 100%;
 	text-rendering: optimizeLegibility;
 	-webkit-tap-highlight-color: transparent;
-	box-sizing: border-box;
-	background-color : transparent;
+	box-sizing: border-box
 }
 
 html *,
@@ -434,18 +433,18 @@ html[data-scroll-lock=true] body {
 
 html ::-moz-selection {
 	color: #fff;
-	background-color: gold
+	background-color: #212529
 }
 
 html ::selection {
 	color: #fff;
-	background-color: gold
+	background-color: #212529
 }
 
 body {
 	cursor: url(https://shopify.github.io/draggable/assets/img/cursor-auto.png), auto;
 	position: relative;
-	background-color: rgba(70,70,70,1);
+	background-color: #fff
 }
 
 @media screen and (min-width:960px) {
@@ -461,11 +460,11 @@ body {
 	}
 	body:before {
 		top: 0;
-		box-shadow: 0 -8rem 0 8rem #212529
+		box-shadow: 0 -8rem 0 8rem transparent
 	}
 	body:after {
 		bottom: 0;
-		box-shadow: 0 0em 0 0rem #212529
+		box-shadow: 0 8rem 0 8rem transparent
 	}
 }
 
@@ -531,7 +530,7 @@ a.SvgContainer {
 }
 
 .Svg {
-	fill: gold
+	fill: currentColor
 }
 
 .Link {
@@ -575,7 +574,7 @@ a.SvgContainer {
 
 .Link--typeUnderlined:focus,
 .Link--typeUnderlined:hover {
-	color: #0042ff
+	color: gold
 }
 
 .Link--typeUnderlined:active {
@@ -609,13 +608,13 @@ a.SvgContainer {
 
 .Button:focus,
 .Button:hover {
-	color: #0042ff;
-	border-color: #0042ff
+	color: gold;
+	border-color: gold
 }
 
 .Button:active {
 	color: #0035cc;
-	border-color: #0042ff
+	border-color: gold
 }
 
 .Button:disabled {
@@ -650,8 +649,8 @@ a.SvgContainer {
 .Button--isActive:focus,
 .Button--isActive:hover {
 	color: #fff;
-	background-color: #0042ff;
-	border-color: #0042ff
+	background-color: gold;
+	border-color: gold
 }
 
 .Button--isActive:active {
@@ -672,7 +671,7 @@ a.SvgContainer {
 }
 
 .Heading {
-	color: gold
+	color: currentColor
 }
 
 .Heading,
@@ -834,14 +833,12 @@ a.SvgContainer {
 }
 
 .Pattern--typeStripes {
-	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, grey 0, grey 50%, var(--pattern-bg-color) 0);
+	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, currentColor 0, currentColor 50%, var(--pattern-bg-color) 0);
 	background-size: .8rem .8rem
 }
 
 .Pattern--typeHalftone {
-	//background-image: radial-gradient(grey 24%, transparent 25%), radial-gradient(grey 24%, transparent 25%);
-	background-image: linear-gradient(45deg, grey 2.38%, #000000 2.38%, #000000 50%, grey 50%, grey 52.38%, #000000 52.38%, #000000 100%);
-
+	background-image: radial-gradient(currentColor 24%, transparent 25%), radial-gradient(currentColor 24%, transparent 25%);
 	background-position: 0 0, .6rem .6rem;
 	background-size: 1.2rem 1.2rem;
 	-webkit-animation: halftone .48s steps(3) infinite both paused;
@@ -849,8 +846,7 @@ a.SvgContainer {
 }
 
 .Pattern--typePlaced {
-	background-color: rgba(0,0,0,0);
-	opacity : 0
+	background-color: gold
 }
 
 .Main {
@@ -971,7 +967,7 @@ a.SvgContainer {
 	position: relative;
 	width: 2rem;
 	height: 2rem;
-	background-color: gold
+	background-color: currentColor
 }
 
 .DragHandle,
@@ -1003,7 +999,7 @@ a.SvgContainer {
 	position: relative;
 	width: 2rem;
 	height: 2rem;
-	border: .4rem solid gold;
+	border: .4rem solid currentColor;
 	border-radius: 50%;
 	transition: border-color .12s cubic-bezier(.64, 0, .35, 1)
 }
@@ -1016,7 +1012,7 @@ a.SvgContainer {
 	display: block;
 	width: 1.6rem;
 	height: .4rem;
-	background-color: gold;
+	background-color: currentColor;
 	-webkit-transform: rotate(45deg);
 	transform: rotate(45deg)
 }
@@ -1733,7 +1729,7 @@ a.NavLink:active {
 @media screen and (min-width:768px) {
 	.BlockContent {
 		min-height: 8.8rem;
-		border-width: .1rem
+		border-width: .8rem
 	}
 }
 
@@ -1799,12 +1795,12 @@ a.NavLink:active {
 
 .BlockLayout--typeGrid {
 	display: grid;
-	grid-gap: .1rem
+	grid-gap: .6rem
 }
 
 @media screen and (min-width:768px) {
 	.BlockLayout--typeGrid {
-		grid-gap: .1rem
+		grid-gap: .8rem
 	}
 }
 
@@ -1815,32 +1811,21 @@ a.NavLink:active {
 .Block--typeShell .BlockContent {
 	color: #212529;
 	background-color: #fff;
-	border-color: gold
+	border-color: currentColor
 }
 
 .Block--typeHollow .BlockContent {
 	color: #c3cfd8;
 	background-color: #fff;
-	border-color: gold
+	border-color: currentColor
 }
 
 .Block--typeStripes .BlockContent {
-	//background-image: repeating-linear-gradient(-45deg, brown, var(--pattern-bg-color) 40%, red 0, black 50%, var(--pattern-bg-color) 0);
-	//background-size: .8rem .8rem;
+	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, currentColor 0, currentColor 50%, var(--pattern-bg-color) 0);
+	background-size: .8rem .8rem;
 	color: #212529;
-	//border-color: gold;
-	//transition: color .12s cubic-bezier(.64, 0, .35, 1)
-}
-
-.Block--typeStripes  .ligneNoire {
-
-	//background-image: repeating-linear-gradient(-45deg, black, black, black 0, black 50%, black 0);
-	//background-image: linear-gradient(45deg, #e7f5a1 2.38%, #000000 2.38%, #000000 50%, #e7f5a1 50%, #e7f5a1 52.38%, #000000 52.38%, #000000 100%);
-	
-	//background-size: .8rem .8rem;
-	color: #212529;
-	//border-color: gold;
-	//transition: color .12s cubic-bezier(.64, 0, .35, 1)
+	border-color: currentColor;
+	transition: color .12s cubic-bezier(.64, 0, .35, 1)
 }
 
 .Block--isDraggable {
@@ -1849,8 +1834,8 @@ a.NavLink:active {
 
 .Block--isDraggable .BlockContent {
 	color: #212529;
-	background-color: black;
-	border-color: gold;
+	background-color: #fff;
+	border-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28)
@@ -1859,7 +1844,7 @@ a.NavLink:active {
 .Block--isDraggable.draggable-source--is-dragging .BlockContent,
 .Block--isDraggable:focus .BlockContent,
 .Block--isDraggable:hover .BlockContent {
-	color: black
+	color: gold
 }
 
 .Block--isDraggable.draggable-source--is-dragging .BlockContent .Pattern--typeHalftone {
@@ -1879,20 +1864,24 @@ a.NavLink:active {
 }
 
 .Block--isDraggable.draggable-mirror {
-	z-index: 7
+	z-index: 1
 }
+
+
 
 .Block--isDraggable.draggable-mirror .BlockContent {
 	color: #fff;
-	background-color: black;
-	border-color: black;
-	-webkit-transform: scale(1.025);
-	transform: scale(1.025)
-}
+	background-color: gold;
+	border-color: gold;
+	webkit-transform: translate(150%, -150%) scale(1.025);
+	transform: translate(150%, -150%) scale(1.025);
+   // -webkit-transform: scale(1.025);
+	//transform: scale(1.025);
+	}
+
 
 .BlockWrapper {
-	position: relative;
-	
+	position: relative
 }
 
 .BlockWrapper.draggable-dropzone--occupied .Block--typeHollow,
@@ -2101,7 +2090,7 @@ a.NavLink:active {
 .PaperStackItem--isDraggable .PaperStackContent {
 	color: #212529;
 	background-color: #fff;
-	border-color: gold;
+	border-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), -webkit-transform .24s cubic-bezier(.64, 0, .35, 1);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.64, 0, .35, 1);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.64, 0, .35, 1), -webkit-transform .24s cubic-bezier(.64, 0, .35, 1)
@@ -2109,7 +2098,7 @@ a.NavLink:active {
 
 .PaperStackItem--isDraggable:focus .PaperStackContent,
 .PaperStackItem--isDraggable:hover .PaperStackContent {
-	color: black;
+	color: gold;
 	-webkit-transform: perspective(90rem) rotateX(60deg) translateY(.8rem);
 	transform: perspective(90rem) rotateX(60deg) translateY(.8rem)
 }
@@ -2121,7 +2110,7 @@ a.NavLink:active {
 }
 
 .PaperStackItem--isDraggable.draggable-source--is-dragging .PaperStackContent {
-	color: black
+	color: gold
 }
 
 .PaperStackItem--isDraggable.draggable-source--is-dragging .PaperStackContent .Pattern--typeHalftone {
@@ -2146,8 +2135,8 @@ a.NavLink:active {
 
 .PaperStackItem--isDraggable.draggable-mirror .PaperStackContent {
 	color: #fff;
-	background-color: black;
-	border-color: black;
+	background-color: gold;
+	border-color: gold;
 	-webkit-transform: perspective(90rem) rotateX(58deg) scale(1.025);
 	transform: perspective(90rem) rotateX(58deg) scale(1.025)
 }
@@ -2177,11 +2166,11 @@ a.NavLink:active {
 	width: 32.5rem;
 	height: 13rem;
 	border-radius: 6.5rem;
-	box-shadow: inset 0 0 0 .8rem black;
+	box-shadow: inset 0 0 0 .8rem gold;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	color: black;
+	color: gold;
 	background-color: #fff;
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
@@ -2207,7 +2196,7 @@ a.NavLink:active {
 		width: 64rem;
 		height: 32rem;
 		border-radius: 16rem;
-		box-shadow: inset 0 0 0 1.6rem black
+		box-shadow: inset 0 0 0 1.6rem gold
 	}
 }
 
@@ -2241,7 +2230,7 @@ a.NavLink:active {
 	height: 13rem;
 	color: #212529;
 	background-color: #fff;
-	border: .8rem solid gold;
+	border: .8rem solid currentColor;
 	border-radius: 50%;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1)
 }
@@ -2262,7 +2251,7 @@ a.NavLink:active {
 .PillSwitchControl.draggable-mirror,
 .PillSwitchControl:focus,
 .PillSwitchControl:hover {
-	color: black
+	color: gold
 }
 
 .PillSwitchControl:active {
@@ -2285,14 +2274,14 @@ a.NavLink:active {
 	bottom: auto;
 	left: auto;
 	color: #fff;
-	background-color: black;
-	border-color: black
+	background-color: gold;
+	border-color: gold
 }
 
 .PillSwitch--isOn .PillSwitchControl.draggable-mirror,
 .PillSwitch--isOn .PillSwitchControl:focus,
 .PillSwitch--isOn .PillSwitchControl:hover {
-	color: black;
+	color: gold;
 	background-color: #fff
 }
 
@@ -2474,7 +2463,7 @@ a.NavLink:active {
 		color: #212529
 	}
 	50% {
-		color: black
+		color: gold
 	}
 }
 
@@ -2484,7 +2473,7 @@ a.NavLink:active {
 		color: #212529
 	}
 	50% {
-		color: black
+		color: gold
 	}
 }
 
@@ -2631,7 +2620,7 @@ a.NavLink:active {
 
 .Plate--isDraggable:focus,
 .Plate--isDraggable:hover {
-	color: black
+	color: gold
 }
 
 .Plate--isDraggable .PlateShadowWrapper {
@@ -2640,7 +2629,7 @@ a.NavLink:active {
 }
 
 .Plate--isDraggable .PlateShadow:before {
-	background-color: gold
+	background-color: currentColor
 }
 
 .Plate--isDraggable .PlateContent,
@@ -2653,12 +2642,12 @@ a.NavLink:active {
 
 .Plate--isDraggable .PlateContent {
 	background-color: #fff;
-	border: .5vw solid gold
+	border: 2.5vw solid currentColor
 }
 
 @media screen and (min-width:960px) {
 	.Plate--isDraggable .PlateContent {
-		border-width: .6rem
+		border-width: 1.6rem
 	}
 }
 
@@ -2724,16 +2713,16 @@ a.NavLink:active {
 }
 
 .StackedListWrapper {
-	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, gold 0, gold 50%, var(--pattern-bg-color) 0);
+	background-image: repeating-linear-gradient(-45deg, var(--pattern-bg-color), var(--pattern-bg-color) 40%, currentColor 0, currentColor 50%, var(--pattern-bg-color) 0);
 	background-size: .8rem .8rem;
 	position: relative;
 	color: #212529;
-	box-shadow: inset 0 0 0 .6rem gold
+	box-shadow: inset 0 0 0 .6rem currentColor
 }
 
 @media screen and (min-width:768px) {
 	.StackedListWrapper {
-		box-shadow: inset 0 0 0 .8rem gold
+		box-shadow: inset 0 0 0 .8rem currentColor
 	}
 }
 
@@ -2751,7 +2740,7 @@ a.NavLink:active {
 
 .StackedListHeader {
 	padding: 2.2rem;
-	background-color: gold;
+	background-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1)
 }
 
@@ -2801,7 +2790,7 @@ a.NavLink:active {
 	margin: auto;
 	letter-spacing: -.01em;
 	line-height: 1.2;
-	color: gold;
+	color: currentColor;
 	font-size: 2rem;
 	font-weight: 700;
 	pointer-events: none;
@@ -2861,9 +2850,9 @@ a.NavLink:active {
 	display: flex;
 	align-items: center;
 	padding: 1.6rem;
-	color: gold;
+	color: currentColor;
 	background-color: #fafbfc;
-	border: .6rem solid gold;
+	border: .6rem solid currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28)
@@ -2871,7 +2860,7 @@ a.NavLink:active {
 
 @media screen and (min-width:768px) {
 	.StackedListContent {
-		border-width: .2rem
+		border-width: .8rem
 	}
 }
 
@@ -2893,7 +2882,7 @@ a.NavLink:active {
 	left: -.6rem;
 	display: block;
 	height: .6rem;
-	background-color: gold;
+	background-color: currentColor;
 	opacity: 0;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), opacity .12s cubic-bezier(.64, 0, .35, 1)
 }
@@ -2935,7 +2924,7 @@ a.NavLink:active {
 	content: "";
 	position: absolute;
 	display: block;
-	background-color: gold;
+	background-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), opacity .24s cubic-bezier(.64, 0, .35, 1);
 	right: 0;
 	bottom: 0;
@@ -2992,7 +2981,7 @@ a.NavLink:active {
 	content: "";
 	position: absolute;
 	display: block;
-	background-color: gold;
+	background-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), opacity .24s cubic-bezier(.64, 0, .35, 1);
 	top: 0;
 	right: 0;
@@ -3140,17 +3129,17 @@ a.NavLink:active {
 
 .StackedListItem--isDraggable:focus .StackedListContent,
 .StackedListItem--isDraggable:hover .StackedListContent {
-	color: black
+	color: gold
 }
 
 .StackedListItem--isDraggable:focus+.StackedListItem .StackedListContent:before,
 .StackedListItem--isDraggable:hover+.StackedListItem .StackedListContent:before {
-	background-color: black;
+	background-color: gold;
 	opacity: 1
 }
 
 .StackedListItem--isDraggable.draggable-source--is-dragging .StackedListContent {
-	color: black
+	color: gold
 }
 
 .StackedListItem--isDraggable.draggable-source--is-dragging .StackedListContent .Pattern--typeHalftone {
@@ -3163,7 +3152,7 @@ a.NavLink:active {
 
 .StackedListItem--isDraggable.draggable-source--is-dragging+.draggable--original+.StackedListItem .StackedListContent:before,
 .StackedListItem--isDraggable.draggable-source--is-dragging+.StackedListItem .StackedListContent:before {
-	background-color: black;
+	background-color: gold;
 	opacity: 1
 }
 
@@ -3181,8 +3170,8 @@ a.NavLink:active {
 
 .StackedListItem--isDraggable.draggable-mirror .StackedListContent {
 	color: #fff;
-	background-color: black;
-	border-color: black;
+	background-color: gold;
+	border-color: gold;
 	-webkit-transform: scale(1.025);
 	transform: scale(1.025)
 }
@@ -3198,13 +3187,12 @@ a.NavLink:active {
 
 .StackedListItem--isDraggable.draggable-mirror .DragHandle:after,
 .StackedListItem--isDraggable.draggable-mirror .DragHandle:before {
-	background-color: black
+	background-color: gold
 }
 
-.UniqueDropzone .BlockLayout .BlockWrapper .Block:nth-child(1n+15):not(.draggable-source--is-dragging) {
+.UniqueDropzone .BlockLayout .BlockWrapper .Block:nth-child(1n+1):not(.draggable-source--is-dragging) {
 	min-height: 0;
-	height: 0;
-	//background-color: red;
+	height: 0
 }
 
 .UniqueDropzone .BlockLayout--typeFlex .BlockWrapper {
@@ -3218,47 +3206,43 @@ a.NavLink:active {
 }
 
 .UniqueDropzone .BlockLayout--typeGrid {
-
-	background-color: rgba(0,0,0,0);
-	grid-template-rows: repeat(1, 1fr);
-		grid-template-columns: repeat(13, 1fr);
-		grid-template-areas: "a b c d e f g h i j k l m";
-	margin-top: 0rem;
-	border: 0rem solid #212529;
+	grid-template-rows: repeat(1, .1fr);
+	grid-template-columns: repeat(1, .1fr);
+	grid-template-areas: "a"; /*"a a d d" "c c d d" "e e f f" "e e g g" "h h h h";*/
+	margin-top: .6rem;
+	border: .6rem solid #212529;
 	background-color: #212529
 }
 
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid {
-		
-	background-color:  rgba(0,0,0,0);
-		grid-template-columns: repeat(13, 1fr);
-		grid-template-areas: "a b c d e f g h i j k l m";
-		margin-top: 0rem;
-		border-width: 0rem
+		grid-template-columns: .1fr;
+		grid-template-areas: "a"; /* "a c c g" "a d f g" "b d f g" "b e f h" "b e f h";*/
+		margin-top: .8rem;
+		border-width: .8rem
 	}
 }
 
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper--isDropzone:before {
 	content: "";
 	position: absolute;
-	top:  0rem;
-	right: 0rem;
-	bottom: 0rem;
-	left: 0rem;
+	top: -.6rem;
+	right: -.6rem;
+	bottom: -.6rem;
+	left: -.6rem;
 	display: block;
 	pointer-events: none;
-	//background-color: gold;
+	background-color: gold;
 	opacity: 0;
 	transition: opacity .12s cubic-bezier(.64, 0, .35, 1)
 }
 
 @media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper--isDropzone:before {
-		top: 0rem;
-		right: 0rem;
-		bottom: 0rem;
-		left: 0rem;
+		top: -.8rem;
+		right: -.8rem;
+		bottom: -.8rem;
+		left: -.8rem
 	}
 }
 
@@ -3267,92 +3251,36 @@ a.NavLink:active {
 }
 
 .UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-	border: 0;
+	border: 0
 }
 
 .UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:first-child {
 	grid-area: a
 }
 
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(2) {
-	grid-area: b
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(3) {
-	grid-area: c
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(4) {
-	grid-area: d
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(5) {
-	grid-area: e
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(6) {
-	grid-area: f
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(7) {
-	grid-area: g
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(8) {
-	grid-area: h
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(9) {
-	grid-area: i
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(10) {
-	grid-area: j
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(11) {
-	grid-area: k
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(12) {
-	grid-area: l
-}
-
-.UniqueDropzone .BlockLayout--typeGrid .BlockWrapper:nth-child(13) {
-	grid-area: m
-}
-
-
-/*telephone */
-@media screen and (min-width:770px) {
-	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 3.65rem
+@media screen and (min-width:768px) {
+	.UniqueDropzone .BlockLayout--typeFlex .BlockContent {
+		min-height: 13.6rem
 	}
 }
 
-/* tablette */
-@media screen and (min-width:900px ){
-	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 9.7rem
+@media screen and (min-width:1440px) {
+	.UniqueDropzone .BlockLayout--typeFlex .BlockContent {
+		min-height: 18.4rem
 	}
 }
 
-
-/* pc portable */
-@media screen and (min-width:1440px)  and ( min-height:600px) {
+@media screen and (min-width:768px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 10.3rem
+		min-height: 12.8rem
 	}
 }
 
-/* ecran 16:9 */
-@media screen and (min-width:1440px )  and ( min-height:800px) {
+@media screen and (min-width:1440px) {
 	.UniqueDropzone .BlockLayout--typeGrid .BlockContent {
-		min-height: 13.95rem
+		min-height: 17.6rem
 	}
 }
-
-
 
 .SimpleList {
 	margin-left: auto;
@@ -3406,7 +3334,7 @@ a.NavLink:active {
 }
 
 .draggable--is-dragging .MultipleContainers .draggable-container-parent--capacity {
-	color: black
+	color: gold
 }
 
 .Flexbox .Block.draggable--original~.Block:nth-child(2),
