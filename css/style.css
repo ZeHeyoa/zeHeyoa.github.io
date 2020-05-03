@@ -1876,8 +1876,7 @@ a.NavLink:active {
 	opacity:.4;
 	webkit-transform: translate(-40%, -120%) scale(1.025);
 	transform: translate(-40%, -120%) scale(1.025);
-}
-
+	}
 
 .BlockWrapper {
 	position: relative
