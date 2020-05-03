@@ -1874,11 +1874,9 @@ a.NavLink:active {
 	background-color: gold;
 	border-color: gold;
 	opacity:.4;
-	webkit-transform: translate(-40%, -350%) scale(1.025);
-	transform: translate(-40%, -350%) scale(1.025);
-   // -webkit-transform: scale(1.025);
-	//transform: scale(1.025);
-	}
+	webkit-transform: translate(-40%, -120%) scale(1.025);
+	transform: translate(-40%, -120%) scale(1.025);
+}
 
 
 .BlockWrapper {
