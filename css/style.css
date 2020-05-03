@@ -1873,8 +1873,9 @@ a.NavLink:active {
 	color: #fff;
 	background-color: gold;
 	border-color: gold;
-	webkit-transform: translate(150%, -150%) scale(1.025);
-	transform: translate(150%, -150%) scale(1.025);
+	opacity:.4;
+	webkit-transform: translate(-40%, -350%) scale(1.025);
+	transform: translate(-40%, -350%) scale(1.025);
    // -webkit-transform: scale(1.025);
 	//transform: scale(1.025);
 	}

@@ -4,12 +4,12 @@
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		  <link rel="stylesheet" href="css/style.css">
-				<link rel="stylesheet" type="text/css" href="css/baraja.css" />
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/baraja.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
 		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-		<link type="text/css" rel="stylesheet" href="main.css">
+		<link type="text/css" rel="stylesheet" href="css/main.css">
 		<style>
 			a {
 				color: #8ff;
@@ -84,6 +84,8 @@
 				background-color: rgba(0,255,255,0.75);
 			}
 		</style>
+		
+		  <script src="./js/draggable.bundle.js"></script>
 	</head>
 	<body>
 
@@ -94,11 +96,11 @@
 
 		<script type="module">
 
-			import * as THREE from './three.module.js';
+			import * as THREE from './js/three.module.js';
 
-			import { TWEEN } from './tween.module.min.js';
-			import { TrackballControls } from './TrackballControls.js';
-			import { CSS3DRenderer, CSS3DObject } from './CSS3DRenderer.js';
+			import { TWEEN } from './js/tween.module.min.js';
+			import { TrackballControls } from './js/TrackballControls.js';
+			import { CSS3DRenderer, CSS3DObject } from './js/CSS3DRenderer.js';
 
 			var table = [
 				"H", "Hydrogen", "1.00794", 1, 1,
@@ -252,6 +254,10 @@
 					element.dataset.dropzone = 'attaque1';
 					element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
 
+					/*var bloc = document.createElement( 'div' );
+					bloc.className = 'BlockContent';
+					element.appendChild( bloc );
+					*/
 					var number = document.createElement( 'div' );
 					number.className = 'number';
 					number.textContent = ( i / 5 ) + 1;
@@ -440,8 +446,8 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 			
 		</script>
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.baraja.js"></script>
+		<script type="text/javascript" src="./js/jquery-3.5.0.min.js"></script>
+        <script type="text/javascript" src="./js/jquery.baraja.js"></script>
         <script type="text/javascript">	
 			$(function() {
 
@@ -681,7 +687,6 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 
 			});
 		</script>
-		  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/draggable.bundle.js"></script>
 <script>
 
  function loadDraggable(containers) {
@@ -690,6 +695,7 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
   const droppable = new Draggable.Droppable(containers, {
     draggable: '.Block--isDraggable',
     dropzone: '.BlockWrapper--isDropzone',
+	distance : 0,
     mirror: {
       constrainDimensions: true,
     },
