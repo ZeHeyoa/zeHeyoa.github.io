@@ -3992,6 +3992,7 @@ class DragSensor extends _Sensor2.default {
    */
   attach() {
     document.addEventListener('mousedown', this[onMouseDown], true);
+	 
   }
 
   /**
@@ -3999,6 +4000,7 @@ class DragSensor extends _Sensor2.default {
    */
   detach() {
     document.removeEventListener('mousedown', this[onMouseDown], true);
+	
   }
 
   /**
@@ -4244,7 +4246,8 @@ window.addEventListener('touchmove', event => {
 
   // Prevent scrolling
   event.preventDefault();
-}, false);
+}, {passive : false});
+
 
 /**
  * This sensor picks up native browser touch events and dictates drag operations
@@ -4418,8 +4421,8 @@ class TouchSensor extends _Sensor2.default {
 
     document.removeEventListener('touchend', this[onTouchEnd]);
     document.removeEventListener('touchcancel', this[onTouchEnd]);
-    document.removeEventListener('touchmove', this[onTouchMove]);
-    document.removeEventListener('touchmove', this[onDistanceChange]);
+    document.removeEventListener('touchmove', this[onTouchMove], false);
+    document.removeEventListener('touchmove', this[onDistanceChange], false);
 
     if (this.currentContainer) {
       this.currentContainer.removeEventListener('contextmenu', onContextMenu);
