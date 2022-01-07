@@ -672,7 +672,7 @@ var TrackballControls = function ( object, domElement ) {
 
 		this.domElement.removeEventListener( 'touchstart', touchstart, false );
 		this.domElement.removeEventListener( 'touchend', touchend, false );
-		this.domElement.removeEventListener( 'touchmove', touchmove, false );
+		//this.domElement.removeEventListener( 'touchmove', touchmove, false );
 
 		document.removeEventListener( 'mousemove', mousemove, false );
 		document.removeEventListener( 'mouseup', mouseup, false );
@@ -688,7 +688,7 @@ var TrackballControls = function ( object, domElement ) {
 
 	this.domElement.addEventListener( 'touchstart', touchstart, false );
 	this.domElement.addEventListener( 'touchend', touchend, false );
-	this.domElement.addEventListener( 'touchmove', touchmove, false );
+	//this.domElement.addEventListener( 'touchmove', touchmove, false );
 
 	window.addEventListener( 'keydown', keydown, false );
 	window.addEventListener( 'keyup', keyup, false );
