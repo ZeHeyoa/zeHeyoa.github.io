@@ -3992,7 +3992,6 @@ class DragSensor extends _Sensor2.default {
    */
   attach() {
     document.addEventListener('mousedown', this[onMouseDown], true);
-	 
   }
 
   /**
@@ -4000,7 +3999,6 @@ class DragSensor extends _Sensor2.default {
    */
   detach() {
     document.removeEventListener('mousedown', this[onMouseDown], true);
-	
   }
 
   /**
@@ -4246,8 +4244,7 @@ window.addEventListener('touchmove', event => {
 
   // Prevent scrolling
   event.preventDefault();
-}, {passive : false});
-
+}, { passive: false });
 
 /**
  * This sensor picks up native browser touch events and dictates drag operations
@@ -4321,10 +4318,10 @@ class TouchSensor extends _Sensor2.default {
 
     this.startEvent = event;
 
-    document.addEventListener('touchmove', this[onTouchMove], false);
+    document.addEventListener('touchmove', this[onTouchMove]);
     document.addEventListener('touchend', this[onTouchEnd]);
     document.addEventListener('touchcancel', this[onTouchEnd]);
-    document.addEventListener('touchmove', this[onDistanceChange], false);
+    document.addEventListener('touchmove', this[onDistanceChange]);
     container.addEventListener('contextmenu', onContextMenu);
 
     if (this.options.distance) {
@@ -4421,8 +4418,8 @@ class TouchSensor extends _Sensor2.default {
 
     document.removeEventListener('touchend', this[onTouchEnd]);
     document.removeEventListener('touchcancel', this[onTouchEnd]);
-    document.removeEventListener('touchmove', this[onTouchMove], false);
-    document.removeEventListener('touchmove', this[onDistanceChange], false);
+    document.removeEventListener('touchmove', this[onTouchMove]);
+    document.removeEventListener('touchmove', this[onDistanceChange]);
 
     if (this.currentContainer) {
       this.currentContainer.removeEventListener('contextmenu', onContextMenu);
@@ -6240,8 +6237,17 @@ function positionMirror({ withFrame = false, initial = false } = {}) {
       }, args);
 
       if (mirrorOffset) {
-        const x = passedThreshX ? Math.round((sensorEvent.clientX - mirrorOffset.left - scrollOffset.x) / (options.thresholdX || 1)) * (options.thresholdX || 1) : lastMovedX;
-        const y = passedThreshY ? Math.round((sensorEvent.clientY - mirrorOffset.top - scrollOffset.y) / (options.thresholdY || 1)) * (options.thresholdY || 1) : lastMovedY;
+        var x =  (passedThreshX ? Math.round((sensorEvent.clientX - mirrorOffset.left - scrollOffset.x) / (options.thresholdX || 1)) * (options.thresholdX || 1) : lastMovedX);
+        var y =  (passedThreshY ? Math.round((sensorEvent.clientY - mirrorOffset.top - scrollOffset.y) / (options.thresholdY || 1)) * (options.thresholdY || 1) : lastMovedY);
+        
+      /*  x *= result.lastMovedX > x ? -3 : 3;
+        x += result.lastMovedX > x ? 1700 : -1700;
+
+        y *= result.lastMovedY > y ? -3 : 3;
+        y += result.lastMovedY > y ? 1700 : -1700;*/
+
+        x = passedThreshX;
+        x = passedThreshY;
 
         if (options.xAxis && options.yAxis || initial) {
           mirror.style.transform = `translate3d(${x}px, ${y}px, 0)`;
