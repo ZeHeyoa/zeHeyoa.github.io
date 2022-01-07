@@ -1035,7 +1035,7 @@ a.SvgContainer {
 		text-align: center;
 		transition: opacity .24s cubic-bezier(.64, 0, .35, 1), visibility .24s cubic-bezier(.64, 0, .35, 1)
 	}
-	.Sidebar:before { 
+	.Sidebar:before {
 		content: "";
 		position: fixed;
 		top: 0;
@@ -1833,18 +1833,19 @@ a.NavLink:active {
 }
 
 .Block--isDraggable .BlockContent {
-	color: #212529;
-	background-color: #fff;
+	color: #cbccce;
+	background-color:  rgba(121, 72, 8, 0.6);
 	border-color: currentColor;
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
 	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28);
-	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28), -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28)
+	transition: color .12s cubic-bezier(.64, 0, .35, 1), background-color .12s cubic-bezier(.64, 0, .35, 1), transform .24s cubic-bezier(.32, 1.46, .54, 1.28),
+	 -webkit-transform .24s cubic-bezier(.32, 1.46, .54, 1.28) 
 }
 
 .Block--isDraggable.draggable-source--is-dragging .BlockContent,
 .Block--isDraggable:focus .BlockContent,
 .Block--isDraggable:hover .BlockContent {
-	color: gold
+	color: rgb(88, 88, 88)
 }
 
 .Block--isDraggable.draggable-source--is-dragging .BlockContent .Pattern--typeHalftone {
@@ -1870,13 +1871,15 @@ a.NavLink:active {
 
 
 .Block--isDraggable.draggable-mirror .BlockContent {
-	color: #fff;
-	background-color: gold;
-	border-color: gold;
-	opacity:.4;
-	webkit-transform: translate(-40%, -120%) scale(1.025);
-	transform: translate(-40%, -120%) scale(1.025);
+	color: rgb(26, 25, 25);
+	background-color: rgba(39, 255, 226, 0.4);
+	border-color: rgba(50, 50, 50, .1);
+	webkit-transform: translate(0%, 0%) ;
+	transform: translate(-500%, -200%) scale(5.85);
+   /* -webkit-transform: scale(1.025);
+	transform: scale(1.025);*/
 	}
+
 
 .BlockWrapper {
 	position: relative
@@ -1889,7 +1892,7 @@ a.NavLink:active {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	margin: auto
+	margin: auto;
 }
 
 .Block--typeStripes.isColliding .BlockContent {
@@ -3185,7 +3188,7 @@ a.NavLink:active {
 
 .StackedListItem--isDraggable.draggable-mirror .DragHandle:after,
 .StackedListItem--isDraggable.draggable-mirror .DragHandle:before {
-	background-color: gold
+	background-color: rgb(172, 240, 47)
 }
 
 .UniqueDropzone .BlockLayout .BlockWrapper .Block:nth-child(1n+1):not(.draggable-source--is-dragging) {
