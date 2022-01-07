@@ -495,8 +495,7 @@ var TrackballControls = function ( object, domElement ) {
 
 		document.addEventListener( 'mousemove', mousemove, false );
 		document.addEventListener( 'mouseup', mouseup, false );
-	//	document.addEventListener( 'touchmove', touchmove, false );
-		
+
 		_this.dispatchEvent( startEvent );
 
 	}
@@ -538,7 +537,6 @@ var TrackballControls = function ( object, domElement ) {
 
 		document.removeEventListener( 'mousemove', mousemove );
 		document.removeEventListener( 'mouseup', mouseup );
-		//document.removeEventListener( 'touchmove', touchmove, false );
 		_this.dispatchEvent( endEvent );
 
 	}
