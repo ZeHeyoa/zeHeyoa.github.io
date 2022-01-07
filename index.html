@@ -4,12 +4,12 @@
 
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/baraja.css" />
+		  <link rel="stylesheet" href="css/style.css">
+				<link rel="stylesheet" type="text/css" href="css/baraja.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
 		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-		<link type="text/css" rel="stylesheet" href="css/main.css">
+		<link type="text/css" rel="stylesheet" href="main.css">
 		<style>
 			a {
 				color: #8ff;
@@ -23,8 +23,8 @@
 			}
 
 			.element {
-				width: 180px;
-				height: 280px;
+				width: 280px;
+				height: 360px;
 				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
 				border: 1px solid rgba(127,255,255,0.25);
 				font-family: Helvetica, sans-serif;
@@ -40,7 +40,7 @@
 
 				.element .number {
 					position: absolute;
-					top: 20px;
+					top: 0px;
 					right: 20px;
 					font-size: 12px;
 					color: rgba(127,255,255,0.75);
@@ -48,7 +48,7 @@
 
 				.element .symbol {
 					position: absolute;
-					top: 40px;
+					top: 0px;
 					left: 0px;
 					right: 0px;
 					font-size: 60px;
@@ -59,10 +59,11 @@
 
 				.element .details {
 					position: absolute;
+					top: 0px;
 					bottom: 15px;
 					left: 0px;
 					right: 0px;
-					font-size: 12px;
+					font-size: 22px;
 					color: rgba(127,255,255,0.75);
 				}
 
@@ -84,8 +85,6 @@
 				background-color: rgba(0,255,255,0.75);
 			}
 		</style>
-		
-		  <script src="./js/draggable.bundle.js"></script>
 	</head>
 	<body>
 
@@ -96,14 +95,79 @@
 
 		<script type="module">
 
-			import * as THREE from './js/three.module.js';
+			import * as THREE from './three.module.js';
 
-			import { TWEEN } from './js/tween.module.min.js';
-			import { TrackballControls } from './js/TrackballControls.js';
-			import { CSS3DRenderer, CSS3DObject } from './js/CSS3DRenderer.js';
+			import { TWEEN } from './tween.module.min.js';
+			import { TrackballControls } from './TrackballControls.js';
+			import { CSS3DRenderer, CSS3DObject } from './CSS3DRenderer.js';
 
-			
+			var definition = [
+			 {nom : "A" , index : [6,7,8,9,10,11], zoom : 0, color : "rgba(150,250,150,.1)"},
+			 {nom : "M" , index : [3,4,5,12,13,14], zoom :  0, color : "rgba(200,250,200,.1)"},			 
+			 {nom : "D" , index : [0,1,2,15,16,17], zoom : 0, color : "rgba(250,250,150,.1)"}];
 
+            var col = 3*2*3;
+			var ligne = 8;
+            var table = [];
+			var index = 0;
+			var xDepart = -3300;
+			var yDepart = -1200;
+			var joueurSeparation = 500;
+			var groupeSeparation = 0;
+			var colonneSeparation = 100;
+			var typePrecedent = "";
+			for (var i = 0 ; i < col; i++) {
+				table[i] = [];				
+				var type;		
+				for (var k=0;k<definition.length;k++) {
+                    if (definition[k].index.includes(i)) {
+						type = definition[k];
+					}
+				}		
+				
+			 groupeSeparation += (typePrecedent != type.nom) ? joueurSeparation/4 : 0;
+			 typePrecedent = type.nom;
+			 colonneSeparation += 20;
+				for (var j = 0 ; j < ligne; j++) {
+					table[i][j] = {
+				    "nom" : type.nom + index++ ,
+					"x" : xDepart + (i*280) + colonneSeparation + groupeSeparation + ((index > 72) ? joueurSeparation : 0),
+					"y" : yDepart + (j*360),
+					"z" :  type.zoom, 					
+					"color" :  type.color, 
+					"rotationY" : 0};				
+				}
+			}
+
+		/*	var table = [
+				"Defenseur1", "Iron", "55.845",        2000,  -1400, 0,  0,
+				"Defenseur2", "Cobalt", "58.933195",   2000,  -1000,  0,  0,
+				"Defenseur3", "Cobalt", "58.933195",   2000,  -600,  0,  0,
+				"Defenseur4", "Cobalt", "58.933195",   2000,  -200,  0,  0,
+				"Defenseur5", "Iron", "55.845",        2600,  400, 0,  0,
+				"Defenseur6", "Cobalt", "58.933195",   2600,  800,  0,  0,
+				"Defenseur7", "Cobalt", "58.933195",   2600,  1200,  0,  0,
+				"Defenseur8", "Cobalt", "58.933195",   2600,  1600,  0,  0,
+
+				"Milieu", "Iron", "55.845",        1500,  -1000, -150,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1500,    -300,  -150,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1500,   400,  -150,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1500,   1100,  -150,  -.8,
+				"Milieu", "Iron", "55.845",        1200,  -1000, -600,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1200,    -300,  -600,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1200,   400,  -600,  -.8,
+				"Milieu", "Cobalt", "58.933195",   1200,   1100,  -600,  -.8,
+
+				"Attaquant", "Iron", "55.845",        700,  -1000, -700,  0,
+				"Attaquant", "Cobalt", "58.933195",   700,    -300,  -700,  0,
+				"Attaquant", "Cobalt", "58.933195",   700,   400,  -700,  0,
+				"Attaquant", "Cobalt", "58.933195",   700,   1100,  -700,  0,
+				"Attaquant", "Iron", "55.845",        100,  -1000, -700,  0,
+				"Attaquant", "Cobalt", "58.933195",   100,    -300,  -700, 0,
+				"Attaquant", "Cobalt", "58.933195",   100,   400,  -700,  0,
+				"Attaquant", "Cobalt", "58.933195",   100,   1100,  -700,  0,
+
+			];*/
 
 			var camera, scene, renderer;
 			var controls;
@@ -111,28 +175,19 @@
 			var objects = [];
 			var targets = { table: []};
 
-			var table = populate();
 			init();
 			animate();
 
-			
-			function populate(){
-				var table = [12*16];
-			    var inc = 0;
-			    for(var i=1;i<=12;i++) {
-				  for(var j=5;j<=16;j++) {
-				    table[inc++] = ["H", "Hydrogen", "1.00794", j, i];
-				  }
-			    }
-				//console.log(table.flatMap(x => x));
-				return table.flatMap(x => x);
-			}
-			
 			function init() {
 
-				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 3000;
-			    camera.position.y = -3000;
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100 );
+				camera.position.z = 4000;
+				camera.position.y = 0;
+				camera.position.x = 0;
+				var x_axis = new THREE.Vector3( 1, 0, 0 );
+                var quaternion = new THREE.Quaternion;
+                //camera.position.applyQuaternion(quaternion.setFromAxisAngle(x_axis, -25));
+                //camera.up.applyQuaternion(quaternion.setFromAxisAngle(x_axis, -5));
 
 				scene = new THREE.Scene();
 
@@ -143,38 +198,34 @@
 					var object = new CSS3DObject( groupe );
 					scene.add( object );
 					
-				for ( var i = 0; i < table.length; i += 5 ) {
+				for (var i = 0 ; i < col; i++) {
+				 for (var j = 0 ; j < ligne; j++) {
 
 					var element = document.createElement( 'div' );
 					element.className = 'element BlockWrapper--isDropzone';
 					element.dataset.dropzone = 'attaque1';
-					element.style.backgroundColor = 'rgba(0,127,127,' + ( Math.random() * 0.5 + 0.25 ) + ')';
+					element.style.backgroundColor = table[i][j].color;
 
-					/*var bloc = document.createElement( 'div' );
-					bloc.className = 'BlockContent';
-					element.appendChild( bloc );
-					*/
-					var number = document.createElement( 'div' );
+				/*	var number = document.createElement( 'div' );
 					number.className = 'number';
 					number.textContent = ( i / 5 ) + 1;
 					element.appendChild( number );
 
 					var symbol = document.createElement( 'div' );
 					symbol.className = 'symbol';
-					symbol.textContent = table[ i ];
-					element.appendChild( symbol );
+					symbol.textContent = table[i][j].nom;
+					element.appendChild( symbol );*/
 
 					var details = document.createElement( 'div' );
 					details.className = 'details';
-					details.innerHTML = table[ i + 1 ] + '<br>' + table[ i + 2 ];
+					details.innerHTML = table[i][j].nom;
 					element.appendChild( details );
 					groupe.appendChild( element );
 //element.innerHTML = "<iframe width='100' height='200' src='https://www.youtube.com/embed/6v2L2UGZJAM' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
 					var object = new CSS3DObject( element );
 					object.position.x = Math.random() * 4000 - 2000;
 					object.position.y = Math.random() * 4000 - 2000;
-					object.position.z = Math.random() * 4000 - 2000;
-			
+					object.position.z = Math.random() * 4000 - 2000;				      
 					scene.add( object );
 
 					objects.push( object );
@@ -182,15 +233,17 @@
 					//
 
 					var object = new THREE.Object3D();
-					object.position.x = ( table[ i + 3 ] * 180 ) - 1900;
-					object.position.y = - ( table[ i + 4 ] * 270 ) + 2300;
-
+					object.position.x = table[i][j].x;
+					object.position.y =  table[i][j].y;
+					object.position.z =  table[i][j].z;
+					object.rotation.y =   table[i][j].rotationY;
 					targets.table.push( object );
 
+				 }
 				}
 
 			
-								var c = "<section class='main'>"
+				var c = "<section class='main'>"
 				+ "<div class='baraja-demo'>"
 				+ "	<ul id='baraja-el' class='baraja-container BlockLayout'>"
 				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/1.jpg' alt='image1'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
@@ -251,10 +304,9 @@
 					//
 
 					var object = new THREE.Object3D();
-					object.position.x = 0;
-					object.position.y =  -1300;
-object.position.z =  0;
-object.rotation.x =  0.5;
+					object.position.x = -120;
+					object.position.y =  -800;
+					object.position.z =  1200;
 					targets.table.push( object );
 				
 				renderer = new CSS3DRenderer();
@@ -266,8 +318,7 @@ object.rotation.x =  0.5;
 				controls = new TrackballControls( camera, renderer.domElement );
 				controls.minDistance = 500;
 				controls.maxDistance = 6000;
-				controls.noRotate= true;
-				controls.addEventListener( 'change', render );
+				//controls.addEventListener( 'change', render );
 
 				var button = document.getElementById( 'table' );
 				button.addEventListener( 'click', function () {
@@ -344,8 +395,8 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 			
 		</script>
 
-		<script type="text/javascript" src="./js/jquery-3.5.0.min.js"></script>
-        <script type="text/javascript" src="./js/jquery.baraja.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.baraja.js"></script>
         <script type="text/javascript">	
 			$(function() {
 
@@ -585,6 +636,7 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 
 			});
 		</script>
+		  <script src="js/draggable.bundle.js"></script>
 <script>
 
  function loadDraggable(containers) {
@@ -593,9 +645,8 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
   const droppable = new Draggable.Droppable(containers, {
     draggable: '.Block--isDraggable',
     dropzone: '.BlockWrapper--isDropzone',
-	distance : 0,
     mirror: {
-      constrainDimensions: true,
+      constrainDimensions: false,
     },
   });
 
@@ -626,7 +677,8 @@ loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
 	}
 	
 
-  });  
+  });
+  
 }
 
 </script>
