@@ -1,686 +1,190 @@
-<!DOCTYPE html>
-<html>
-	<head>
-
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		  <link rel="stylesheet" href="css/style.css">
-				<link rel="stylesheet" type="text/css" href="css/baraja.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="css/custom.css" />
-		<script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
-		<link type="text/css" rel="stylesheet" href="main.css">
-		<style>
-			a {
-				color: #8ff;
-			}
-
-			#menu {
-				position: absolute;
-				bottom: 20px;
-				width: 100%;
-				text-align: center;
-			}
-
-			.element {
-				width: 280px;
-				height: 360px;
-				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
-				border: 1px solid rgba(127,255,255,0.25);
-				font-family: Helvetica, sans-serif;
-				text-align: center;
-				line-height: normal;
-				cursor: default;
-			}
-
-			.element:hover {
-				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
-				border: 1px solid rgba(127,255,255,0.75);
-			}
-
-				.element .number {
-					position: absolute;
-					top: 0px;
-					right: 20px;
-					font-size: 12px;
-					color: rgba(127,255,255,0.75);
-				}
-
-				.element .symbol {
-					position: absolute;
-					top: 0px;
-					left: 0px;
-					right: 0px;
-					font-size: 60px;
-					font-weight: bold;
-					color: rgba(255,255,255,0.75);
-					text-shadow: 0 0 10px rgba(0,255,255,0.95);
-				}
-
-				.element .details {
-					position: absolute;
-					top: 0px;
-					bottom: 15px;
-					left: 0px;
-					right: 0px;
-					font-size: 22px;
-					color: rgba(127,255,255,0.75);
-				}
-
-			button {
-				color: rgba(127,255,255,0.75);
-				background: transparent;
-				outline: 1px solid rgba(127,255,255,0.75);
-				border: 0px;
-				padding: 5px 10px;
-				cursor: pointer;
-			}
-
-			button:hover {
-				background-color: rgba(0,255,255,0.5);
-			}
-
-			button:active {
-				color: #000000;
-				background-color: rgba(0,255,255,0.75);
-			}
-		</style>
-	</head>
-	<body>
-
-		<div id="container"></div>
-		<div id="menu">
-			<button id="table" hidden>TABLE</button>
-		</div>
-
-		<script type="module">
-
-			import * as THREE from './three.module.js';
-
-			import { TWEEN } from './tween.module.min.js';
-			import { TrackballControls } from './TrackballControls.js';
-			import { CSS3DRenderer, CSS3DObject } from './CSS3DRenderer.js';
-
-			var definition = [
-			 {nom : "A" , index : [6,7,8,9,10,11], zoom : 0, color : "rgba(150,250,150,.1)"},
-			 {nom : "M" , index : [3,4,5,12,13,14], zoom :  0, color : "rgba(200,250,200,.1)"},			 
-			 {nom : "D" , index : [0,1,2,15,16,17], zoom : 0, color : "rgba(250,250,150,.1)"}];
-
-            var col = 3*2*3;
-			var ligne = 8;
-            var table = [];
-			var index = 0;
-			var xDepart = -3300;
-			var yDepart = -1200;
-			var joueurSeparation = 500;
-			var groupeSeparation = 0;
-			var colonneSeparation = 100;
-			var typePrecedent = "";
-			for (var i = 0 ; i < col; i++) {
-				table[i] = [];				
-				var type;		
-				for (var k=0;k<definition.length;k++) {
-                    if (definition[k].index.includes(i)) {
-						type = definition[k];
-					}
-				}		
-				
-			 groupeSeparation += (typePrecedent != type.nom) ? joueurSeparation/4 : 0;
-			 typePrecedent = type.nom;
-			 colonneSeparation += 20;
-				for (var j = 0 ; j < ligne; j++) {
-					table[i][j] = {
-				    "nom" : type.nom + index++ ,
-					"x" : xDepart + (i*280) + colonneSeparation + groupeSeparation + ((index > 72) ? joueurSeparation : 0),
-					"y" : yDepart + (j*360),
-					"z" :  type.zoom, 					
-					"color" :  type.color, 
-					"rotationY" : 0};				
-				}
-			}
-
-		/*	var table = [
-				"Defenseur1", "Iron", "55.845",        2000,  -1400, 0,  0,
-				"Defenseur2", "Cobalt", "58.933195",   2000,  -1000,  0,  0,
-				"Defenseur3", "Cobalt", "58.933195",   2000,  -600,  0,  0,
-				"Defenseur4", "Cobalt", "58.933195",   2000,  -200,  0,  0,
-				"Defenseur5", "Iron", "55.845",        2600,  400, 0,  0,
-				"Defenseur6", "Cobalt", "58.933195",   2600,  800,  0,  0,
-				"Defenseur7", "Cobalt", "58.933195",   2600,  1200,  0,  0,
-				"Defenseur8", "Cobalt", "58.933195",   2600,  1600,  0,  0,
-
-				"Milieu", "Iron", "55.845",        1500,  -1000, -150,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1500,    -300,  -150,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1500,   400,  -150,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1500,   1100,  -150,  -.8,
-				"Milieu", "Iron", "55.845",        1200,  -1000, -600,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1200,    -300,  -600,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1200,   400,  -600,  -.8,
-				"Milieu", "Cobalt", "58.933195",   1200,   1100,  -600,  -.8,
-
-				"Attaquant", "Iron", "55.845",        700,  -1000, -700,  0,
-				"Attaquant", "Cobalt", "58.933195",   700,    -300,  -700,  0,
-				"Attaquant", "Cobalt", "58.933195",   700,   400,  -700,  0,
-				"Attaquant", "Cobalt", "58.933195",   700,   1100,  -700,  0,
-				"Attaquant", "Iron", "55.845",        100,  -1000, -700,  0,
-				"Attaquant", "Cobalt", "58.933195",   100,    -300,  -700, 0,
-				"Attaquant", "Cobalt", "58.933195",   100,   400,  -700,  0,
-				"Attaquant", "Cobalt", "58.933195",   100,   1100,  -700,  0,
-
-			];*/
-
-			var camera, scene, renderer;
-			var controls;
-
-			var objects = [];
-			var targets = { table: []};
-
-			init();
-			animate();
-
-			function init() {
-
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100 );
-				camera.position.z = 4000;
-				camera.position.y = 0;
-				camera.position.x = 0;
-				var x_axis = new THREE.Vector3( 1, 0, 0 );
-                var quaternion = new THREE.Quaternion;
-                //camera.position.applyQuaternion(quaternion.setFromAxisAngle(x_axis, -25));
-                //camera.up.applyQuaternion(quaternion.setFromAxisAngle(x_axis, -5));
-
-				scene = new THREE.Scene();
-
-				// table
-
-	            var groupe = document.createElement( 'div' );
-				groupe.id = 'UniqueDropzone';
-					var object = new CSS3DObject( groupe );
-					scene.add( object );
-					
-				for (var i = 0 ; i < col; i++) {
-				 for (var j = 0 ; j < ligne; j++) {
-
-					var element = document.createElement( 'div' );
-					element.className = 'element BlockWrapper--isDropzone';
-					element.dataset.dropzone = 'attaque1';
-					element.style.backgroundColor = table[i][j].color;
-
-				/*	var number = document.createElement( 'div' );
-					number.className = 'number';
-					number.textContent = ( i / 5 ) + 1;
-					element.appendChild( number );
-
-					var symbol = document.createElement( 'div' );
-					symbol.className = 'symbol';
-					symbol.textContent = table[i][j].nom;
-					element.appendChild( symbol );*/
-
-					var details = document.createElement( 'div' );
-					details.className = 'details';
-					details.innerHTML = table[i][j].nom;
-					element.appendChild( details );
-					groupe.appendChild( element );
-//element.innerHTML = "<iframe width='100' height='200' src='https://www.youtube.com/embed/6v2L2UGZJAM' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
-					var object = new CSS3DObject( element );
-					object.position.x = Math.random() * 4000 - 2000;
-					object.position.y = Math.random() * 4000 - 2000;
-					object.position.z = Math.random() * 4000 - 2000;				      
-					scene.add( object );
-
-					objects.push( object );
-
-					//
-
-					var object = new THREE.Object3D();
-					object.position.x = table[i][j].x;
-					object.position.y =  table[i][j].y;
-					object.position.z =  table[i][j].z;
-					object.rotation.y =   table[i][j].rotationY;
-					targets.table.push( object );
-
-				 }
-				}
-
-			
-				var c = "<section class='main'>"
-				+ "<div class='baraja-demo'>"
-				+ "	<ul id='baraja-el' class='baraja-container BlockLayout'>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/1.jpg' alt='image1'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/2.jpg' alt='image2'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/9.jpg' alt='image9'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/10.jpg' alt='image10'/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/11.jpg' alt='image11'/><h4>Coco Loko</h4><p>Total bicycle rights in blog four loko raw denim ex, helvetica sapiente odio placeat.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/12.jpg' alt='image12'/><h4>Vermouth Land</h4><p>Velit chambray fugiat, enim aesthetic esse ullamco typewriter.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/3.jpg' alt='image3'/><h4>Electrodynamics</h4><p>Before they sold out PBR magna jean shorts non seitan ea. Dolor wolf pop-up.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/4.jpg' alt='image4'/><h4>Retinal Bliss</h4><p>Locavore vero ad, before they sold out food truck bushwick helvetica.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/5.jpg' alt='image5'/><h4>Disco Fever</h4><p>Cillum laboris consequat, qui elit retro next level skateboard freegan .</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/6.jpg' alt='image6'/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img   src='images/7.jpg' alt='image7'/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></div></a></li>"
-				+ "		<li class='BlockWrapper--isDropzone draggable-dropzone--occupied' data-dropzone = 'attaque1'><a href='#' class='Block--isDraggable'><div class='BlockContent'><img  src='images/8.jpg' alt='image8'/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></div></a></li>"
-				+ "	</ul>"
-				+ "<nav class='actions light'>"
-				+ "	<span id='nav-prev'>&lt;</span>"
-				+ "	<span id='nav-next'>&gt;</span>"
-				+ "	<span id='open'>O</span>"
-				+ "</nav>"
-				+ "</div>"
-				/*+ "<nav class='actions'>"
-				+ "	<span id='nav-fan'>Fan right</span>"
-				+ "	<span id='nav-fan2'>Fan left</span>"
-				+ "	<span id='nav-fan3'>Fan right (asym.)</span>"
-				+ "	<span id='nav-fan4'>Fan left (asym.)</span>"
-				+ "	<span id='nav-fan5'>Rotated spread (horizontal)</span>"
-				+ "	<span id='nav-fan6'>Rotated spread (vertical)</span>"
-				+ "	<span id='nav-fan7'>Linear spread right</span>"
-				+ "	<span id='nav-fan8'>Linear spread left</span>"
-				+ "	<span id='nav-fan9'>Linear spread right (irregular)</span>"
-				+ "	<span id='nav-fan10'>Linear spread left (irregular)</span>"
-     			+ "	<span id='nav-fanOther1'>other</span>"
-				+ "	<span id='nav-fanOther2'>other</span>"
-				+ "	<span id='nav-fanOther3'>other</span>"
-				+ "	<span id='nav-fanOther4'>other...</span>"
-     			+ "	<span id='add'>Add items</span>"
-				+ "</nav>"*/
-			    + "</section>";
-				
-				var element = document.createElement( 'div' );
-					element.className = 'container';
-					element.innerHTML = c;
-				var object = new CSS3DObject( element );
-					object.position.x = Math.random() * 400 - 200;
-					object.position.y = Math.random() * 400 - 200;
-					object.position.z = Math.random() * 400 - 200;
-					scene.add( object );
-
-					objects.push( object );
-
-					//
-
-					var object = new THREE.Object3D();
-					object.position.x = -120;
-					object.position.y =  -800;
-					object.position.z =  1200;
-					targets.table.push( object );
-				
-				renderer = new CSS3DRenderer();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.getElementById( 'container' ).appendChild( renderer.domElement );
-
-				//
-
-				controls = new TrackballControls( camera, renderer.domElement );
-				controls.minDistance = 500;
-				controls.maxDistance = 6000;
-				//controls.addEventListener( 'change', render );
-
-				var button = document.getElementById( 'table' );
-				button.addEventListener( 'click', function () {
-
-					transform( targets.table, 2000 );
-
-				}, false );
-
-				transform( targets.table, 2000 );
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize, false );
-loadDraggable([groupe, element.querySelectorAll('.BlockLayout')[0]]);
-			}
-
-			function transform( targets, duration ) {
-
-				TWEEN.removeAll();
-
-				for ( var i = 0; i < objects.length; i ++ ) {
-
-					var object = objects[ i ];
-					var target = targets[ i ];
-
-					new TWEEN.Tween( object.position )
-						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
-
-					new TWEEN.Tween( object.rotation )
-						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
-						.easing( TWEEN.Easing.Exponential.InOut )
-						.start();
-
-				}
-
-				new TWEEN.Tween( this )
-					.to( {}, duration * 2 )
-					.onUpdate( render )
-					.start();
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-				render();
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				TWEEN.update();
-
-				controls.update();
-
-			}
-
-			function render() {
-
-				renderer.render( scene, camera );
-
-			}
-
-			
-  
-			
-		</script>
-
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.baraja.js"></script>
-        <script type="text/javascript">	
-			$(function() {
-
-				var $el = $( '#baraja-el' ),
-					baraja = $el.baraja();
-
-				// navigation
-				$( '#nav-prev' ).on( 'click touchstart', function( event ) {
-
-					baraja.previous();
-				
-				} );
-
-				$( '#nav-next' ).on( 'click touchstart', function( event ) {
-
-					baraja.next();
-				
-				} );
-
-				// simple fan
-				$( '#nav-fan' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 90,
-						direction : 'right',
-						origin : { x : 25, y : 100 },
-						center : true
-					} );
-				
-				} );
-
-				$( '#nav-fan2' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 90,
-						direction : 'left',
-						// note that the x origin changes (symmetric)
-						origin : { x : 75, y : 100 },
-						center : true
-					} );
-				
-				} );
-
-				// more realistic fan: without common origin (means the origin changes / increments by card )
-				$( '#nav-fan3' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 90,
-						direction : 'right',
-						origin : { minX : 20, maxX : 80, y : 100 },
-						center : true,
-						translation : 60
-					} );
-				
-				} );
-
-				$( '#nav-fan4' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 90,
-						direction : 'left',
-						origin : { minX : 20, maxX : 80, y : 100 },
-						center : true,
-						translation : 60
-					} );
-				
-				} );
-
-				// playing with different origins and ranges	
-				$( '#nav-fan5' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 100,
-						direction : 'right',
-						origin : { x : 50, y : 200 },
-						center : true
-					} );
-				
-				} );
-
-				$( '#nav-fan6' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 80,
-						direction : 'left',
-						origin : { x : 200, y : 50 },
-						center : true
-					} );
-				
-				} );
-
-				// center false, playing with translation
-				$( '#nav-fan7' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 20,
-						direction : 'right',
-						origin : { x : 50, y : 200 },
-						center : false,
-						translation : 300
-					} );
-				
-				} );
-
-				$( '#nav-fan8' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 20,
-						direction : 'left',
-						origin : { x : 50, y : 200 },
-						center : false,
-						translation : 300
-					} );
-				
-				} );
-
-				// using scatter : true
-				$( '#nav-fan9' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 20,
-						direction : 'right',
-						origin : { x : 50, y : 200 },
-						center : false,
-						translation : 300,
-						scatter : true
-					} );
-				
-				} );
-
-				$( '#nav-fan10' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 20,
-						direction : 'left',
-						origin : { x : 50, y : 200 },
-						center : false,
-						translation : 300,
-						scatter : true
-					} );
-				
-				} );
-
-				$( '#nav-fanOther1' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 130,
-						direction : 'left',
-						origin : { x : 25, y : 100 },
-						center : false
-					} );
-				
-				} );
-
-				$( '#nav-fanOther2' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 360,
-						direction : 'left',
-						origin : { x : 50, y : 90 },
-						center : false
-					} );
-				
-				} );
-
-				$( '#nav-fanOther3' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 330,
-						direction : 'left',
-						origin : { x : 50, y : 100 },
-						center : true
-					} );
-				
-				} );
-
-				$( '#nav-fanOther4' ).on( 'click touchstart', function( event ) {
-
-					baraja.fan( {
-						speed : 500,
-						easing : 'ease-out',
-						range : 90,
-						direction : 'right',
-						origin : { minX : 20, maxX : 80, y : 100 },
-						center : true,
-						translation : 60,
-						scatter : true
-					} );
-				
-				} );
-
-				// close the baraja
-				$( '#close' ).on( 'click touchstart', function( event ) {
-
-					baraja.close();
-				
-				} );
-
-				// example of how to add more items
-				$( '#add' ).on( 'click touchstart', function( event ) {
-
-					if( $( this ).hasClass( 'disabled' ) ) {
-						return false;
-					}
-
-					$( this ).addClass( 'disabled' );
-
-					baraja.add( $('<li><img src="images/6.jpg" alt="image6"/><h4>Serenity</h4><p>Truffaut wes anderson hoodie 3 wolf moon labore, fugiat lomo iphone eiusmod vegan.</p></li><li><img src="images/7.jpg" alt="image7"/><h4>Dark Honor</h4><p>Chillwave mustache pinterest, marfa seitan umami id farm-to-table iphone.</p></li><li><img src="images/8.jpg" alt="image8"/><h4>Nested Happiness</h4><p>Minim post-ironic banksy american apparel iphone wayfarers.</p></li><li><img src="images/9.jpg" alt="image9"/><h4>Cherry Country</h4><p>Sint vinyl Austin street art odd future id trust fund, terry richardson cray.</p></li>') );
-				
-				} );
-
-			});
-		</script>
-		  <script src="js/draggable.bundle.js"></script>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entraînement à l'examen civique</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#16213a;--mute:#5d6783;--line:#d9deea;--accent:#1f3f9e;--accent-ink:#fff;--ok:#16794a;--okbg:#e4f5ec;--ko:#b3261e;--kobg:#fbe9e7;--r:10px}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1526;--card:#171f36;--ink:#e8ecf7;--mute:#9aa5c4;--line:#2b3556;--accent:#6f93ff;--accent-ink:#0f1526;--ok:#5fd29a;--okbg:#12302a;--ko:#ff8a80;--kobg:#3a1c1f}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font:700 1.7rem/1.2 Georgia,"Times New Roman",serif;margin:8px 0 4px}
+h2{font:700 1.3rem/1.35 Georgia,"Times New Roman",serif;margin:0 0 16px}
+p.sub{color:var(--mute);margin:0 0 20px}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--card);margin:0 0 12px;padding:10px 14px 12px}
+legend{font-weight:600;padding:0 6px}
+label{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}
+input[type=checkbox],input[type=radio]{margin-top:5px;accent-color:var(--accent)}
+.count{color:var(--mute);white-space:nowrap;margin-left:auto;padding-left:8px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.row>fieldset{flex:1 1 240px;margin:0}
+select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%}
+.mini{display:flex;gap:8px;margin:0 0 12px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:var(--r);padding:12px 20px;font-weight:600}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.link{background:none;border:0;color:var(--accent);padding:2px 4px;text-decoration:underline}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0 18px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.meta{display:flex;justify-content:space-between;color:var(--mute);font-size:.9rem}
+.opt{display:flex;gap:12px;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:0 0 10px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt b{flex:none;width:1.6em;height:1.6em;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:.85rem}
+.opt.sel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.ko{border-color:var(--ko);background:var(--kobg)}
+.opt:disabled{cursor:default}
+.fb{min-height:1.6em;font-weight:600;margin:4px 0 14px}
+.fb.ok{color:var(--ok)}.fb.ko{color:var(--ko)}
+.score{font:700 3rem/1 Georgia,serif;margin:8px 0}
+.err{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ko);border-radius:var(--r);padding:12px 14px;margin:0 0 10px}
+.err p{margin:2px 0}.bad{color:var(--ko)}.good{color:var(--ok)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main id="app"></main>
 <script>
+const DATA = {"title":"Questions civiques","total":209,"quizzes":[{"id":1,"title":"Valeurs de la République, Citoyenneté et Laïcité","themes":["Valeurs de la République","République et citoyenneté","Laïcité et liberté de conscience"],"count":40,"questions":[{"number":1,"theme":"Valeurs de la République","question":"Parmi les propositions suivantes, laquelle constitue une participation citoyenne ?","options":[{"id":"A","text":"Ignorer les élections"},{"id":"B","text":"Voter aux élections"},{"id":"C","text":"Refuser de s’inscrire sur les listes électorales"},{"id":"D","text":"Ne pas lire les programmes politiques"}],"answer":"B","id":"q1-1"},{"number":2,"theme":"Valeurs de la République","question":"Que garantit la liberté d’expression ?","options":[{"id":"A","text":"Le droit de tout imposer sans limites"},{"id":"B","text":"Le droit de censurer les autres"},{"id":"C","text":"Le droit de dire uniquement la vérité officielle"},{"id":"D","text":"Le droit d’exprimer ses opinions dans le respect de la loi"}],"answer":"D","id":"q1-2"},{"number":3,"theme":"Valeurs de la République","question":"À quoi sert un titre de séjour ?","options":[{"id":"A","text":"À prouver la nationalité française"},{"id":"B","text":"À autoriser un étranger à séjourner légalement en France"},{"id":"C","text":"À voter aux élections présidentielles"},{"id":"D","text":"À obtenir automatiquement un emploi"}],"answer":"B","id":"q1-3"},{"number":4,"theme":"Valeurs de la République","question":"La liberté de circulation permet à toute personne de :","options":[{"id":"A","text":"Voyager librement dans les limites de la loi"},{"id":"B","text":"Rester uniquement dans son pays de naissance"},{"id":"C","text":"Être obligée de rester dans sa région"},{"id":"D","text":"Voyager uniquement avec autorisation policière"}],"answer":"A","id":"q1-4"},{"number":5,"theme":"Valeurs de la République","question":"Sur quel site internet peut-on retrouver le symbole de la République française ?","options":[{"id":"A","text":"wikipedia.org"},{"id":"B","text":"elysee.fr"},{"id":"C","text":"amazon.fr"},{"id":"D","text":"netflix.com"}],"answer":"B","id":"q1-5"},{"number":6,"theme":"Valeurs de la République","question":"Complétez la Marseillaise : \"Aux armes […] !\"","options":[{"id":"A","text":"soldats"},{"id":"B","text":"citoyens"},{"id":"C","text":"français uniquement"},{"id":"D","text":"amis"}],"answer":"B","id":"q1-6"},{"number":7,"theme":"Valeurs de la République","question":"Complétez la Marseillaise : \"Allons enfants de la patrie […]\"","options":[{"id":"A","text":"le jour de gloire est arrivé"},{"id":"B","text":"vive la liberté"},{"id":"C","text":"marchons vers la paix"},{"id":"D","text":"chantons ensemble"}],"answer":"A","id":"q1-7"},{"number":8,"theme":"Valeurs de la République","question":"En application de la liberté individuelle, une personne peut :","options":[{"id":"A","text":"Être obligée de suivre les autres"},{"id":"B","text":"Ne jamais choisir ses vêtements"},{"id":"C","text":"Faire tout ce qu’elle veut sans loi"},{"id":"D","text":"Se déplacer et s’habiller librement dans le respect de la loi"}],"answer":"D","id":"q1-8"},{"number":9,"theme":"Valeurs de la République","question":"Concernant la pratique de la religion :","options":[{"id":"A","text":"Elle est interdite en France"},{"id":"B","text":"Elle est obligatoire"},{"id":"C","text":"Elle est libre ou non, selon chacun"},{"id":"D","text":"Elle dépend de l’État"}],"answer":"C","id":"q1-9"},{"number":10,"theme":"Valeurs de la République","question":"Un parent peut-il refuser le sport mixte à l’école ?","options":[{"id":"A","text":"Oui toujours"},{"id":"B","text":"Non sans raison valable prévue par la loi"},{"id":"C","text":"Oui pour toute raison religieuse"},{"id":"D","text":"Oui sans justification"}],"answer":"B","id":"q1-10"},{"number":11,"theme":"République et citoyenneté","question":"Quelle est la devise de la France ?","options":[{"id":"A","text":"Travail, Famille, Patrie"},{"id":"B","text":"Liberté, Union, Justice"},{"id":"C","text":"Liberté, Égalité, Fraternité"},{"id":"D","text":"Paix, Force, Honneur"}],"answer":"C","id":"q1-11"},{"number":12,"theme":"République et citoyenneté","question":"La répudiation de sa femme est :","options":[{"id":"A","text":"Autorisée partout"},{"id":"B","text":"Une tradition obligatoire"},{"id":"C","text":"Un droit en France"},{"id":"D","text":"Interdite et contraire aux droits fondamentaux"}],"answer":"D","id":"q1-12"},{"number":13,"theme":"République et citoyenneté","question":"Les impôts permettent de financer :","options":[{"id":"A","text":"Les dépenses publiques"},{"id":"B","text":"Les jeux d’argent"},{"id":"C","text":"Les intérêts privés uniquement"},{"id":"D","text":"Les entreprises uniquement"}],"answer":"A","id":"q1-13"},{"number":14,"theme":"République et citoyenneté","question":"Peut-on brûler publiquement un drapeau français ?","options":[{"id":"A","text":"Oui toujours"},{"id":"B","text":"Oui dans tous les cas"},{"id":"C","text":"Non, c’est interdit dans ce contexte"},{"id":"D","text":"Oui comme un jeu"}],"answer":"C","id":"q1-14"},{"number":15,"theme":"République et citoyenneté","question":"L’État lutte contre les discriminations grâce :","options":[{"id":"A","text":"À l’absence de lois"},{"id":"B","text":"À des lois et des sanctions"},{"id":"C","text":"À l’interdiction de la justice"},{"id":"D","text":"À la suppression des droits"}],"answer":"B","id":"q1-15"},{"number":16,"theme":"République et citoyenneté","question":"Que représente Marianne ?","options":[{"id":"A","text":"Une députée réelle"},{"id":"B","text":"Une chanteuse célèbre"},{"id":"C","text":"La justice uniquement"},{"id":"D","text":"Le symbole de la République française"}],"answer":"D","id":"q1-16"},{"number":17,"theme":"République et citoyenneté","question":"La liberté d’association est :","options":[{"id":"A","text":"L’interdiction de se regrouper"},{"id":"B","text":"Le droit de créer ou rejoindre une association librement"},{"id":"C","text":"Une obligation d’État"},{"id":"D","text":"Réservée aux entreprises"}],"answer":"B","id":"q1-17"},{"number":18,"theme":"République et citoyenneté","question":"Qu’est-ce que la liberté ?","options":[{"id":"A","text":"Faire uniquement ce que l’État impose"},{"id":"B","text":"Faire tout sans règle"},{"id":"C","text":"Faire ce que la loi interdit"},{"id":"D","text":"Faire ce que la loi permet"}],"answer":"D","id":"q1-18"},{"number":19,"theme":"République et citoyenneté","question":"La Marseillaise est :","options":[{"id":"A","text":"Un film"},{"id":"B","text":"Une loi"},{"id":"C","text":"L’hymne national français"},{"id":"D","text":"Un drapeau"}],"answer":"C","id":"q1-19"},{"number":20,"theme":"République et citoyenneté","question":"Sur quel document peut-on voir Marianne ?","options":[{"id":"A","text":"Carte de crédit"},{"id":"B","text":"Timbres et documents officiels"},{"id":"C","text":"Factures privées"},{"id":"D","text":"Tickets de transport uniquement"}],"answer":"B","id":"q1-20"},{"number":21,"theme":"République et citoyenneté","question":"Un employeur refuse les femmes :","options":[{"id":"A","text":"C’est légal"},{"id":"B","text":"C’est recommandé"},{"id":"C","text":"C’est une obligation"},{"id":"D","text":"C’est une discrimination interdite"}],"answer":"D","id":"q1-21"},{"number":22,"theme":"République et citoyenneté","question":"L’égalité signifie :","options":[{"id":"A","text":"Donner plus de droits à certains"},{"id":"B","text":"Interdire les lois"},{"id":"C","text":"Traiter tout le monde de manière identique sans discrimination"},{"id":"D","text":"Favoriser un groupe"}],"answer":"C","id":"q1-22"},{"number":23,"theme":"République et citoyenneté","question":"La langue française est :","options":[{"id":"A","text":"Une langue secondaire"},{"id":"B","text":"Interdite dans certains cas"},{"id":"C","text":"La langue officielle de la République"},{"id":"D","text":"Facultative dans l’administration"}],"answer":"C","id":"q1-23"},{"number":24,"theme":"République et citoyenneté","question":"Quels sont des symboles officiels de la République française ?","options":[{"id":"A","text":"Pizza, Tour Eiffel, croissant"},{"id":"B","text":"Drapeau, devise, Marianne, Marseillaise"},{"id":"C","text":"Internet et télévision"},{"id":"D","text":"École et université uniquement"}],"answer":"B","id":"q1-24"},{"number":25,"theme":"République et citoyenneté","question":"Peut-on insulter quelqu’un pour sa différence ?","options":[{"id":"A","text":"Oui librement"},{"id":"B","text":"Oui sur internet"},{"id":"C","text":"Oui si on est en colère"},{"id":"D","text":"Non, c’est interdit"}],"answer":"D","id":"q1-25"},{"number":26,"theme":"République et citoyenneté","question":"Le régime de la France est :","options":[{"id":"A","text":"Une monarchie"},{"id":"B","text":"Une dictature"},{"id":"C","text":"Une république démocratique et laïque"},{"id":"D","text":"Un empire"}],"answer":"C","id":"q1-26"},{"number":27,"theme":"Laïcité et liberté de conscience","question":"Pourquoi respecter la laïcité à l’école ?","options":[{"id":"A","text":"Pour favoriser une religion"},{"id":"B","text":"Pour éviter les conflits et garantir la neutralité"},{"id":"C","text":"Pour imposer une croyance"},{"id":"D","text":"Pour supprimer les religions"}],"answer":"B","id":"q1-27"},{"number":28,"theme":"Laïcité et liberté de conscience","question":"La loi de séparation des Églises et de l’État date de :","options":[{"id":"A","text":"1945"},{"id":"B","text":"1958"},{"id":"C","text":"1881"},{"id":"D","text":"1905"}],"answer":"D","id":"q1-28"},{"number":29,"theme":"Laïcité et liberté de conscience","question":"Une personne a-t-elle le droit de ne pas croire ?","options":[{"id":"A","text":"Non"},{"id":"B","text":"Oui, liberté de conscience"},{"id":"C","text":"Seulement sur autorisation"},{"id":"D","text":"Seulement en France"}],"answer":"B","id":"q1-29"},{"number":30,"theme":"Laïcité et liberté de conscience","question":"La laïcité garantit :","options":[{"id":"A","text":"L’interdiction des religions"},{"id":"B","text":"Une religion officielle"},{"id":"C","text":"La liberté de croire ou ne pas croire"},{"id":"D","text":"Le contrôle religieux de l’État"}],"answer":"C","id":"q1-30"},{"number":31,"theme":"Laïcité et liberté de conscience","question":"À l’école publique, qui peut porter des signes religieux visibles ?","options":[{"id":"A","text":"Personne"},{"id":"B","text":"Uniquement les enseignants"},{"id":"C","text":"Tout le monde sans limite"},{"id":"D","text":"Les élèves selon la loi en vigueur (interdiction des signes ostentatoires)"}],"answer":"D","id":"q1-31"},{"number":32,"theme":"Laïcité et liberté de conscience","question":"La neutralité de l’État signifie :","options":[{"id":"A","text":"Favoriser une religion"},{"id":"B","text":"Être contre toutes les religions"},{"id":"C","text":"Ne favoriser aucune religion"},{"id":"D","text":"Imposer une croyance"}],"answer":"C","id":"q1-32"},{"number":33,"theme":"Laïcité et liberté de conscience","question":"Un usager en mairie peut :","options":[{"id":"A","text":"Recevoir des services publics"},{"id":"B","text":"Diriger la mairie"},{"id":"C","text":"Créer des lois"},{"id":"D","text":"Juger des citoyens"}],"answer":"A","id":"q1-33"},{"number":34,"theme":"Laïcité et liberté de conscience","question":"Qui doit respecter la neutralité religieuse en préfecture ?","options":[{"id":"A","text":"Les visiteurs"},{"id":"B","text":"Les agents publics"},{"id":"C","text":"Les touristes"},{"id":"D","text":"Les entreprises privées"}],"answer":"B","id":"q1-34"},{"number":35,"theme":"Laïcité et liberté de conscience","question":"Les agents publics doivent être neutres :","options":[{"id":"A","text":"Oui, toujours"},{"id":"B","text":"Non jamais"},{"id":"C","text":"Seulement parfois"},{"id":"D","text":"Uniquement à leur choix"}],"answer":"A","id":"q1-35"},{"number":36,"theme":"Laïcité et liberté de conscience","question":"La laïcité garantit :","options":[{"id":"A","text":"Une religion obligatoire"},{"id":"B","text":"La liberté de conscience et l’égalité"},{"id":"C","text":"L’interdiction de penser"},{"id":"D","text":"La suppression des droits"}],"answer":"B","id":"q1-36"},{"number":37,"theme":"Laïcité et liberté de conscience","question":"A-t-on le droit de changer de religion ?","options":[{"id":"A","text":"Non"},{"id":"B","text":"Oui"},{"id":"C","text":"Seulement une fois"},{"id":"D","text":"Seulement dans certains pays"}],"answer":"B","id":"q1-37"},{"number":38,"theme":"Laïcité et liberté de conscience","question":"La laïcité représente :","options":[{"id":"A","text":"Une religion d’État"},{"id":"B","text":"La séparation des religions et de l’État"},{"id":"C","text":"Une obligation religieuse"},{"id":"D","text":"Une interdiction des croyances"}],"answer":"B","id":"q1-38"},{"number":39,"theme":"Laïcité et liberté de conscience","question":"La Charte de la laïcité interdit :","options":[{"id":"A","text":"Apprendre à lire"},{"id":"B","text":"Les loisirs scolaires"},{"id":"C","text":"Le respect des règles"},{"id":"D","text":"Le prosélytisme et les signes religieux ostentatoires à l’école"}],"answer":"D","id":"q1-39"},{"number":40,"theme":"Laïcité et liberté de conscience","question":"L’article 1er de la Constitution française dit que la France est :","options":[{"id":"A","text":"Une monarchie religieuse"},{"id":"B","text":"Une fédération religieuse"},{"id":"C","text":"Une dictature"},{"id":"D","text":"Une République indivisible, laïque, démocratique et sociale"}],"answer":"D","id":"q1-40"}]},{"id":2,"title":"Institutions françaises, Démocratie et Union européenne","themes":["État de droit et démocratie","Institutions françaises","Collectivités territoriales","Union européenne"],"count":50,"questions":[{"number":1,"theme":"État de droit et démocratie","question":"Qu'est-ce que l'État de droit ?","options":[{"id":"A","text":"L’État est au-dessus des citoyens et des lois"},{"id":"B","text":"Les lois ne s’appliquent qu’aux étrangers"},{"id":"C","text":"Le gouvernement peut décider sans règle"},{"id":"D","text":"Tous, y compris l’État, doivent respecter la loi"}],"answer":"D","id":"q2-1"},{"number":2,"theme":"État de droit et démocratie","question":"Le président de la République a commis un crime. Quelle proposition est correcte ?","options":[{"id":"A","text":"Il est totalement au-dessus des lois"},{"id":"B","text":"Il ne peut jamais être jugé"},{"id":"C","text":"Il peut être jugé selon des procédures spécifiques"},{"id":"D","text":"Il n’y a aucune conséquence"}],"answer":"C","id":"q2-2"},{"number":3,"theme":"État de droit et démocratie","question":"La loi est l'expression de :","options":[{"id":"A","text":"La police"},{"id":"B","text":"Le peuple"},{"id":"C","text":"Un parti politique"},{"id":"D","text":"Le président uniquement"}],"answer":"B","id":"q2-3"},{"number":4,"theme":"État de droit et démocratie","question":"Durée du mandat du conseil municipal et du maire :","options":[{"id":"A","text":"3 ans"},{"id":"B","text":"6 ans"},{"id":"C","text":"5 ans"},{"id":"D","text":"9 ans"}],"answer":"B","id":"q2-4"},{"number":5,"theme":"État de droit et démocratie","question":"Que garantit l’État de droit ?","options":[{"id":"A","text":"L’absence de lois"},{"id":"B","text":"La domination du gouvernement"},{"id":"C","text":"L’arbitraire total"},{"id":"D","text":"L’égalité devant la loi"}],"answer":"D","id":"q2-5"},{"number":6,"theme":"État de droit et démocratie","question":"Peut-on voter à la place d'une autre personne ?","options":[{"id":"A","text":"Oui librement"},{"id":"B","text":"Oui si on est de la même famille"},{"id":"C","text":"Oui sur demande"},{"id":"D","text":"Non, c’est interdit"}],"answer":"D","id":"q2-6"},{"number":7,"theme":"État de droit et démocratie","question":"Le vote est-il obligatoire ?","options":[{"id":"A","text":"Oui en France"},{"id":"B","text":"Non en France"},{"id":"C","text":"Oui dans toute l’UE"},{"id":"D","text":"Oui pour les élections présidentielles uniquement"}],"answer":"B","id":"q2-7"},{"number":8,"theme":"État de droit et démocratie","question":"Le président peut-il rester au pouvoir après son mandat ?","options":[{"id":"A","text":"Oui sans limite"},{"id":"B","text":"Oui s’il le souhaite"},{"id":"C","text":"Non, il doit quitter ses fonctions"},{"id":"D","text":"Oui avec accord du gouvernement"}],"answer":"C","id":"q2-8"},{"number":9,"theme":"État de droit et démocratie","question":"Qui dirige l'action du Gouvernement ?","options":[{"id":"A","text":"Le Sénat"},{"id":"B","text":"Le Conseil constitutionnel"},{"id":"C","text":"Le président du Parlement"},{"id":"D","text":"Le Premier ministre"}],"answer":"D","id":"q2-9"},{"number":10,"theme":"État de droit et démocratie","question":"Qui nomme le Premier ministre ?","options":[{"id":"A","text":"Le Parlement"},{"id":"B","text":"Le peuple"},{"id":"C","text":"Le Conseil d’État"},{"id":"D","text":"Le président de la République"}],"answer":"D","id":"q2-10"},{"number":11,"theme":"Institutions françaises","question":"Organisation administrative de la France :","options":[{"id":"A","text":"Régions, départements, communes"},{"id":"B","text":"Cantons uniquement"},{"id":"C","text":"Provinces et royaumes"},{"id":"D","text":"États indépendants"}],"answer":"A","id":"q2-11"},{"number":12,"theme":"Institutions françaises","question":"Le pouvoir législatif est :","options":[{"id":"A","text":"Le pouvoir de la police"},{"id":"B","text":"Le pouvoir de juger"},{"id":"C","text":"Le pouvoir d’appliquer les lois"},{"id":"D","text":"Le pouvoir de faire les lois"}],"answer":"D","id":"q2-12"},{"number":13,"theme":"Institutions françaises","question":"Pourquoi séparer les pouvoirs ?","options":[{"id":"A","text":"Pour donner tout le pouvoir à un seul"},{"id":"B","text":"Pour supprimer la démocratie"},{"id":"C","text":"Pour éviter les conflits entre citoyens"},{"id":"D","text":"Pour éviter les abus de pouvoir"}],"answer":"D","id":"q2-13"},{"number":14,"theme":"Institutions françaises","question":"Qui sanctionne un vol ?","options":[{"id":"A","text":"Le président"},{"id":"B","text":"Le gouvernement"},{"id":"C","text":"La mairie"},{"id":"D","text":"Le juge"}],"answer":"D","id":"q2-14"},{"number":15,"theme":"Institutions françaises","question":"Rôle du gouvernement :","options":[{"id":"A","text":"Juger les citoyens"},{"id":"B","text":"Écrire les lois"},{"id":"C","text":"Contrôler les médias"},{"id":"D","text":"Appliquer les lois et diriger la politique"}],"answer":"D","id":"q2-15"},{"number":16,"theme":"Institutions françaises","question":"Si un ministre ne respecte pas la loi :","options":[{"id":"A","text":"Il n’a aucune conséquence"},{"id":"B","text":"Il est automatiquement roi"},{"id":"C","text":"Il est récompensé"},{"id":"D","text":"Il peut être sanctionné"}],"answer":"D","id":"q2-16"},{"number":17,"theme":"Institutions françaises","question":"Nombre de députés à l’Assemblée nationale :","options":[{"id":"A","text":"577"},{"id":"B","text":"350"},{"id":"C","text":"1000"},{"id":"D","text":"200"}],"answer":"A","id":"q2-17"},{"number":18,"theme":"Institutions françaises","question":"Qui peut voter en France ?","options":[{"id":"A","text":"Tous les mineurs"},{"id":"B","text":"Les touristes"},{"id":"C","text":"Les étrangers sans condition"},{"id":"D","text":"Les citoyens français majeurs"}],"answer":"D","id":"q2-18"},{"number":19,"theme":"Institutions françaises","question":"Durée du mandat des sénateurs :","options":[{"id":"A","text":"3 ans"},{"id":"B","text":"10 ans"},{"id":"C","text":"5 ans"},{"id":"D","text":"6 ans"}],"answer":"D","id":"q2-19"},{"number":20,"theme":"Institutions françaises","question":"Séparation des pouvoirs :","options":[{"id":"A","text":"Police, armée, école"},{"id":"B","text":"Président, maire, préfet"},{"id":"C","text":"Lois, impôts, élections"},{"id":"D","text":"Législatif, exécutif, judiciaire"}],"answer":"D","id":"q2-20"},{"number":21,"theme":"Institutions françaises","question":"Le président a-t-il tous les pouvoirs ?","options":[{"id":"A","text":"Oui"},{"id":"B","text":"Non, il partage les pouvoirs"},{"id":"C","text":"Oui en cas d’élection"},{"id":"D","text":"Oui uniquement en guerre"}],"answer":"B","id":"q2-21"},{"number":22,"theme":"Institutions françaises","question":"Qui est le préfet ?","options":[{"id":"A","text":"Un élu municipal"},{"id":"B","text":"Un juge"},{"id":"C","text":"Un maire"},{"id":"D","text":"Un représentant de l’État dans un département"}],"answer":"D","id":"q2-22"},{"number":23,"theme":"Institutions françaises","question":"Condition pour voter :","options":[{"id":"A","text":"Être majeur et citoyen français"},{"id":"B","text":"Être étudiant"},{"id":"C","text":"Être salarié"},{"id":"D","text":"Être résident étranger"}],"answer":"A","id":"q2-23"},{"number":24,"theme":"Institutions françaises","question":"Qui dirige la commune ?","options":[{"id":"A","text":"Le préfet"},{"id":"B","text":"Le président"},{"id":"C","text":"Le député"},{"id":"D","text":"Le maire"}],"answer":"D","id":"q2-24"},{"number":25,"theme":"Institutions françaises","question":"Régime politique de la France :","options":[{"id":"A","text":"Monarchie absolue"},{"id":"B","text":"Dictature"},{"id":"C","text":"Empire"},{"id":"D","text":"République démocratique"}],"answer":"D","id":"q2-25"},{"number":26,"theme":"Institutions françaises","question":"Hôtel de Matignon :","options":[{"id":"A","text":"L’Élysée"},{"id":"B","text":"Le Parlement européen"},{"id":"C","text":"Le Sénat"},{"id":"D","text":"Résidence du Premier ministre"}],"answer":"D","id":"q2-26"},{"number":27,"theme":"Institutions françaises","question":"Le Parlement est composé :","options":[{"id":"A","text":"Du président et du gouvernement"},{"id":"B","text":"Du Conseil d’État uniquement"},{"id":"C","text":"Des maires et préfets"},{"id":"D","text":"De l’Assemblée nationale et du Sénat"}],"answer":"D","id":"q2-27"},{"number":28,"theme":"Institutions françaises","question":"Rôle du président :","options":[{"id":"A","text":"Juger les citoyens"},{"id":"B","text":"Faire les lois"},{"id":"C","text":"Diriger les mairies"},{"id":"D","text":"Garantir le respect de la Constitution"}],"answer":"D","id":"q2-28"},{"number":29,"theme":"Institutions françaises","question":"Rôle du Premier ministre :","options":[{"id":"A","text":"Diriger les juges"},{"id":"B","text":"Contrôler les régions"},{"id":"C","text":"Diriger l’armée seul"},{"id":"D","text":"Diriger le gouvernement"}],"answer":"D","id":"q2-29"},{"number":30,"theme":"Institutions françaises","question":"Chef du Gouvernement :","options":[{"id":"A","text":"Le président du Sénat"},{"id":"B","text":"Le président de la République"},{"id":"C","text":"Le préfet"},{"id":"D","text":"Le Premier ministre"}],"answer":"D","id":"q2-30"},{"number":31,"theme":"Institutions françaises","question":"Nombre de régions en France :","options":[{"id":"A","text":"22"},{"id":"B","text":"10"},{"id":"C","text":"15"},{"id":"D","text":"18"}],"answer":"A","id":"q2-31"},{"number":32,"theme":"Institutions françaises","question":"Défenseur des droits :","options":[{"id":"A","text":"Contrôle les impôts"},{"id":"B","text":"Fait les lois"},{"id":"C","text":"Gère les élections"},{"id":"D","text":"Défend les personnes contre les discriminations"}],"answer":"D","id":"q2-32"},{"number":33,"theme":"Institutions françaises","question":"L’euro est monnaie unique depuis :","options":[{"id":"A","text":"2005"},{"id":"B","text":"2015"},{"id":"C","text":"1990"},{"id":"D","text":"2002"}],"answer":"D","id":"q2-33"},{"number":34,"theme":"Collectivités territoriales","question":"Rôle principal du département :","options":[{"id":"A","text":"Gérer les écoles privées"},{"id":"B","text":"Faire les lois"},{"id":"C","text":"Gérer les relations internationales"},{"id":"D","text":"Action sociale et collèges"}],"answer":"D","id":"q2-34"},{"number":35,"theme":"Collectivités territoriales","question":"Rôle principal des communes :","options":[{"id":"A","text":"Défense nationale"},{"id":"B","text":"Justice"},{"id":"C","text":"Relations européennes"},{"id":"D","text":"Services de proximité"}],"answer":"D","id":"q2-35"},{"number":36,"theme":"Collectivités territoriales","question":"Nombre de communes en France :","options":[{"id":"A","text":"1 000"},{"id":"B","text":"20 000"},{"id":"C","text":"100 000"},{"id":"D","text":"Environ 35 000"}],"answer":"D","id":"q2-36"},{"number":37,"theme":"Union européenne","question":"Traité de construction de l’UE :","options":[{"id":"A","text":"Traité de Rome"},{"id":"B","text":"Traité de Paris"},{"id":"C","text":"Traité de Lisbonne"},{"id":"D","text":"Traité de Maastricht"}],"answer":"D","id":"q2-37"},{"number":38,"theme":"Union européenne","question":"État sorti de l’UE en 2020 :","options":[{"id":"A","text":"Allemagne"},{"id":"B","text":"Espagne"},{"id":"C","text":"Italie"},{"id":"D","text":"Royaume-Uni"}],"answer":"D","id":"q2-38"},{"number":39,"theme":"Union européenne","question":"Devise de l’Union européenne :","options":[{"id":"A","text":"Unité dans la diversité"},{"id":"B","text":"Liberté pour tous"},{"id":"C","text":"Paix et justice"},{"id":"D","text":"Force et union"}],"answer":"A","id":"q2-39"},{"number":40,"theme":"Union européenne","question":"Hymne de l’UE :","options":[{"id":"A","text":"La Marseillaise"},{"id":"B","text":"God Save the King"},{"id":"C","text":"Ode à la joie"},{"id":"D","text":"L’Internationale"}],"answer":"C","id":"q2-40"},{"number":41,"theme":"Union européenne","question":"Drapeau européen :","options":[{"id":"A","text":"Rouge avec étoile blanche"},{"id":"B","text":"Vert avec croissant"},{"id":"C","text":"Bleu avec 12 étoiles jaunes"},{"id":"D","text":"Bleu avec 27 étoiles rouges"}],"answer":"C","id":"q2-41"},{"number":42,"theme":"Union européenne","question":"Couleur du drapeau européen :","options":[{"id":"A","text":"Vert"},{"id":"B","text":"Rouge"},{"id":"C","text":"Bleu avec étoiles jaunes"},{"id":"D","text":"Noir et blanc"}],"answer":"C","id":"q2-42"},{"number":43,"theme":"Union européenne","question":"Traité de Maastricht signé en :","options":[{"id":"A","text":"1980"},{"id":"B","text":"1995"},{"id":"C","text":"1975"},{"id":"D","text":"1992"}],"answer":"D","id":"q2-43"},{"number":44,"theme":"Union européenne","question":"Siège du Parlement européen :","options":[{"id":"A","text":"Bruxelles uniquement"},{"id":"B","text":"Rome"},{"id":"C","text":"Berlin"},{"id":"D","text":"Strasbourg"}],"answer":"D","id":"q2-44"},{"number":45,"theme":"Union européenne","question":"Siège de la Commission européenne :","options":[{"id":"A","text":"Genève"},{"id":"B","text":"Londres"},{"id":"C","text":"Madrid"},{"id":"D","text":"Bruxelles"}],"answer":"D","id":"q2-45"},{"number":46,"theme":"Union européenne","question":"État non membre de l’UE :","options":[{"id":"A","text":"France"},{"id":"B","text":"Allemagne"},{"id":"C","text":"Espagne"},{"id":"D","text":"Suisse"}],"answer":"D","id":"q2-46"},{"number":47,"theme":"Union européenne","question":"Journée de l’Europe :","options":[{"id":"A","text":"14 juillet"},{"id":"B","text":"25 décembre"},{"id":"C","text":"1er mai"},{"id":"D","text":"9 mai"}],"answer":"D","id":"q2-47"},{"number":48,"theme":"Union européenne","question":"Élections européennes :","options":[{"id":"A","text":"Tous les 2 ans"},{"id":"B","text":"Tous les 10 ans"},{"id":"C","text":"Tous les ans"},{"id":"D","text":"Tous les 5 ans"}],"answer":"D","id":"q2-48"},{"number":49,"theme":"Union européenne","question":"Condition pour voter aux élections européennes :","options":[{"id":"A","text":"Être résident mondial"},{"id":"B","text":"Être mineur européen"},{"id":"C","text":"Être fonctionnaire"},{"id":"D","text":"Être citoyen de l’UE majeur"}],"answer":"D","id":"q2-49"},{"number":50,"theme":"Union européenne","question":"Pays fondateur de l’UE :","options":[{"id":"A","text":"Norvège"},{"id":"B","text":"Royaume-Uni"},{"id":"C","text":"Suisse"},{"id":"D","text":"France"}],"answer":"D","id":"q2-50"}]},{"id":3,"title":"Droits et devoirs du citoyen","themes":["Libertés et droits fondamentaux","Respect de la personne et libertés publiques","Environnement et citoyenneté","Sécurité, justice et ordre public"],"count":38,"questions":[{"number":1,"theme":"Libertés et droits fondamentaux","question":"À quelle liberté la PMA fait-elle référence ?","options":[{"id":"A","text":"Liberté de circulation"},{"id":"B","text":"Liberté d’expression"},{"id":"C","text":"Liberté de commerce"},{"id":"D","text":"Liberté de disposer de son corps"}],"answer":"D","id":"q3-1"},{"number":2,"theme":"Libertés et droits fondamentaux","question":"Au nom de quoi l'État justifie-t-il la restriction des droits ?","options":[{"id":"A","text":"Le hasard"},{"id":"B","text":"L’intérêt privé"},{"id":"C","text":"L’avis des réseaux sociaux"},{"id":"D","text":"L’intérêt général et l’ordre public"}],"answer":"D","id":"q3-2"},{"number":3,"theme":"Libertés et droits fondamentaux","question":"Concernant le droit de se marier :","options":[{"id":"A","text":"Il est interdit aux majeurs"},{"id":"B","text":"Il est réservé aux étrangers"},{"id":"C","text":"Il est obligatoire"},{"id":"D","text":"Il est libre pour tous dans le respect de la loi"}],"answer":"D","id":"q3-3"},{"number":4,"theme":"Libertés et droits fondamentaux","question":"Est-il toujours possible de divorcer ?","options":[{"id":"A","text":"Oui toujours sans condition"},{"id":"B","text":"Non jamais"},{"id":"C","text":"Oui sous certaines conditions légales"},{"id":"D","text":"Seulement à l’étranger"}],"answer":"C","id":"q3-4"},{"number":5,"theme":"Libertés et droits fondamentaux","question":"La peine de mort est :","options":[{"id":"A","text":"Obligatoire en France"},{"id":"B","text":"Légale en France"},{"id":"C","text":"Autorisée dans certains cas"},{"id":"D","text":"Abolie en France"}],"answer":"D","id":"q3-5"},{"number":6,"theme":"Libertés et droits fondamentaux","question":"Citation de la DDHC de 1789 :","options":[{"id":"A","text":"La liberté est un luxe”"},{"id":"B","text":"L’égalité n’existe pas”"},{"id":"C","text":"Le peuple doit obéir sans droit”"},{"id":"D","text":"Les hommes naissent et demeurent libres et égaux en droits”"}],"answer":"D","id":"q3-6"},{"number":7,"theme":"Libertés et droits fondamentaux","question":"Le recours à l’avortement est-il autorisé ?","options":[{"id":"A","text":"Oui sous conditions légales"},{"id":"B","text":"Non jamais"},{"id":"C","text":"Oui uniquement pour les hommes"},{"id":"D","text":"Oui sans limite dans tous les pays"}],"answer":"A","id":"q3-7"},{"number":8,"theme":"Libertés et droits fondamentaux","question":"Que contient la Constitution ?","options":[{"id":"A","text":"Des recettes de loi"},{"id":"B","text":"Des lois privées"},{"id":"C","text":"Des décisions locales uniquement"},{"id":"D","text":"L’organisation et les principes de l’État"}],"answer":"D","id":"q3-8"},{"number":9,"theme":"Libertés et droits fondamentaux","question":"La liberté de la presse garantit :","options":[{"id":"A","text":"La censure totale"},{"id":"B","text":"L’interdiction des médias"},{"id":"C","text":"Le contrôle de l’État sur les journalistes"},{"id":"D","text":"La liberté d’informer et d’être informé"}],"answer":"D","id":"q3-9"},{"number":10,"theme":"Libertés et droits fondamentaux","question":"La Charte de l’environnement prévoit :","options":[{"id":"A","text":"La suppression des lois écologiques"},{"id":"B","text":"L’interdiction de la nature"},{"id":"C","text":"La liberté de polluer"},{"id":"D","text":"Le droit à un environnement sain"}],"answer":"D","id":"q3-10"},{"number":11,"theme":"Respect de la personne et libertés publiques","question":"La dignité humaine signifie :","options":[{"id":"A","text":"Être supérieur aux autres"},{"id":"B","text":"Être riche"},{"id":"C","text":"Pouvoir faire tout sans loi"},{"id":"D","text":"Respect dû à chaque personne"}],"answer":"D","id":"q3-11"},{"number":12,"theme":"Respect de la personne et libertés publiques","question":"Le droit de manifester signifie :","options":[{"id":"A","text":"Interdiction de se rassembler"},{"id":"B","text":"Obligation de manifester"},{"id":"C","text":"Manifestation uniquement privée"},{"id":"D","text":"Possibilité de se réunir pour exprimer une opinion"}],"answer":"D","id":"q3-12"},{"number":13,"theme":"Respect de la personne et libertés publiques","question":"PMA signifie :","options":[{"id":"A","text":"Procédure médicale d’arrêt"},{"id":"B","text":"Projet médical administratif"},{"id":"C","text":"Programme municipal annuel"},{"id":"D","text":"Procréation médicalement assistée"}],"answer":"D","id":"q3-13"},{"number":14,"theme":"Respect de la personne et libertés publiques","question":"Le texte le plus difficile à modifier est :","options":[{"id":"A","text":"Le règlement intérieur"},{"id":"B","text":"Une loi simple"},{"id":"C","text":"Une décision municipale"},{"id":"D","text":"La Constitution"}],"answer":"D","id":"q3-14"},{"number":15,"theme":"Respect de la personne et libertés publiques","question":"Liberté de croire en la religion :","options":[{"id":"A","text":"Liberté économique"},{"id":"B","text":"Liberté de circulation"},{"id":"C","text":"Liberté d’expression uniquement"},{"id":"D","text":"Liberté de conscience"}],"answer":"D","id":"q3-15"},{"number":16,"theme":"Respect de la personne et libertés publiques","question":"Le droit de grève est :","options":[{"id":"A","text":"L’interdiction de travailler"},{"id":"B","text":"Une obligation permanente"},{"id":"C","text":"Une sanction"},{"id":"D","text":"Le droit collectif d’arrêter le travail pour revendications"}],"answer":"D","id":"q3-16"},{"number":17,"theme":"Respect de la personne et libertés publiques","question":"La Constitution est :","options":[{"id":"A","text":"Un code de police"},{"id":"B","text":"Un règlement scolaire"},{"id":"C","text":"Un contrat privé"},{"id":"D","text":"Le texte fondamental de la République"}],"answer":"D","id":"q3-17"},{"number":18,"theme":"Respect de la personne et libertés publiques","question":"Qui peut demander à avorter ?","options":[{"id":"A","text":"Seulement les hommes"},{"id":"B","text":"Seulement les mineurs"},{"id":"C","text":"Personne"},{"id":"D","text":"Une femme enceinte selon la loi"}],"answer":"D","id":"q3-18"},{"number":19,"theme":"Respect de la personne et libertés publiques","question":"Une femme majeure peut voter :","options":[{"id":"A","text":"Non jamais"},{"id":"B","text":"Oui uniquement aux municipales"},{"id":"C","text":"Oui seulement en UE"},{"id":"D","text":"Oui en France"}],"answer":"D","id":"q3-19"},{"number":20,"theme":"Respect de la personne et libertés publiques","question":"Réseaux sociaux :","options":[{"id":"A","text":"Tout est autorisé sans limite"},{"id":"B","text":"Ils sont interdits"},{"id":"C","text":"Ils sont surveillés uniquement pour les enfants"},{"id":"D","text":"Les lois s’y appliquent comme ailleurs"}],"answer":"D","id":"q3-20"},{"number":21,"theme":"Environnement et citoyenneté","question":"Jeter un mégot par terre est :","options":[{"id":"A","text":"Obligatoire"},{"id":"B","text":"Un acte écologique"},{"id":"C","text":"Un droit citoyen"},{"id":"D","text":"Une pollution interdite"}],"answer":"D","id":"q3-21"},{"number":22,"theme":"Environnement et citoyenneté","question":"L’État peut-il limiter les droits ?","options":[{"id":"A","text":"Jamais"},{"id":"B","text":"Seulement pour les riches"},{"id":"C","text":"Seulement pour les étrangers"},{"id":"D","text":"Oui pour protéger l’ordre public et les droits d’autrui"}],"answer":"D","id":"q3-22"},{"number":23,"theme":"Environnement et citoyenneté","question":"Attitude écologique :","options":[{"id":"A","text":"Brûler les déchets"},{"id":"B","text":"Jeter dans la nature"},{"id":"C","text":"Mélanger tous les déchets"},{"id":"D","text":"Trier ses déchets"}],"answer":"D","id":"q3-23"},{"number":24,"theme":"Environnement et citoyenneté","question":"Une obligation :","options":[{"id":"A","text":"Voter pour un parti"},{"id":"B","text":"Ne jamais travailler"},{"id":"C","text":"Être riche"},{"id":"D","text":"Respecter la loi"}],"answer":"D","id":"q3-24"},{"number":25,"theme":"Environnement et citoyenneté","question":"Limiter la liberté d’expression :","options":[{"id":"A","text":"Pour interdire les opinions"},{"id":"B","text":"Sans raison"},{"id":"C","text":"Pour favoriser une religion"},{"id":"D","text":"Pour protéger l’ordre public et les droits d’autrui"}],"answer":"D","id":"q3-25"},{"number":26,"theme":"Environnement et citoyenneté","question":"Trier ses déchets sert à :","options":[{"id":"A","text":"Augmenter la pollution"},{"id":"B","text":"Rendre les déchets plus dangereux"},{"id":"C","text":"Les jeter plus vite"},{"id":"D","text":"Protéger l’environnement"}],"answer":"D","id":"q3-26"},{"number":27,"theme":"Sécurité, justice et ordre public","question":"Une victime de violences doit :","options":[{"id":"A","text":"Se taire"},{"id":"B","text":"Se défendre seule uniquement"},{"id":"C","text":"Ignorer les faits"},{"id":"D","text":"Porter plainte"}],"answer":"D","id":"q3-27"},{"number":28,"theme":"Sécurité, justice et ordre public","question":"Face aux policiers ou gendarmes :","options":[{"id":"A","text":"Les insulter"},{"id":"B","text":"Fuir automatiquement"},{"id":"C","text":"Refuser toujours"},{"id":"D","text":"Obéir aux ordres légaux"}],"answer":"D","id":"q3-28"},{"number":29,"theme":"Sécurité, justice et ordre public","question":"Rôle de la police :","options":[{"id":"A","text":"Faire les lois"},{"id":"B","text":"Juger les citoyens"},{"id":"C","text":"Diriger l’État"},{"id":"D","text":"Maintenir l’ordre public"}],"answer":"D","id":"q3-29"},{"number":30,"theme":"Sécurité, justice et ordre public","question":"Assistance à personne en danger :","options":[{"id":"A","text":"Ignorer la personne"},{"id":"B","text":"Filmer sans agir"},{"id":"C","text":"Partir"},{"id":"D","text":"Appeler les secours"}],"answer":"D","id":"q3-30"},{"number":31,"theme":"Sécurité, justice et ordre public","question":"Limitation de liberté :","options":[{"id":"A","text":"Interdire la vie privée"},{"id":"B","text":"Supprimer la loi"},{"id":"C","text":"Donner tous les droits"},{"id":"D","text":"Interdiction de circuler en cas de danger"}],"answer":"D","id":"q3-31"},{"number":32,"theme":"Sécurité, justice et ordre public","question":"Face aux violences :","options":[{"id":"A","text":"Participer"},{"id":"B","text":"Filmer sans rien faire"},{"id":"C","text":"Encourager"},{"id":"D","text":"Alerter les secours"}],"answer":"D","id":"q3-32"},{"number":33,"theme":"Sécurité, justice et ordre public","question":"Infraction la plus grave :","options":[{"id":"A","text":"Contravention"},{"id":"B","text":"Amende simple"},{"id":"C","text":"Délit"},{"id":"D","text":"Crime"}],"answer":"D","id":"q3-33"},{"number":34,"theme":"Sécurité, justice et ordre public","question":"Obligation pour tous en France :","options":[{"id":"A","text":"Être religieux"},{"id":"B","text":"Être étudiant"},{"id":"C","text":"Être salarié"},{"id":"D","text":"Respecter les lois"}],"answer":"D","id":"q3-34"},{"number":35,"theme":"Sécurité, justice et ordre public","question":"Exemple de crime :","options":[{"id":"A","text":"Retard scolaire"},{"id":"B","text":"Insulte légère"},{"id":"C","text":"Stationnement interdit"},{"id":"D","text":"Meurtre"}],"answer":"D","id":"q3-35"},{"number":36,"theme":"Sécurité, justice et ordre public","question":"Exemple de délit :","options":[{"id":"A","text":"Homicide volontaire"},{"id":"B","text":"Crime de guerre"},{"id":"C","text":"Meurtre"},{"id":"D","text":"Vol"}],"answer":"D","id":"q3-36"},{"number":37,"theme":"Sécurité, justice et ordre public","question":"Qui maintient l’ordre public ?","options":[{"id":"A","text":"Les députés"},{"id":"B","text":"Les maires uniquement"},{"id":"C","text":"Les enseignants"},{"id":"D","text":"La police et la gendarmerie"}],"answer":"D","id":"q3-37"},{"number":38,"theme":"Sécurité, justice et ordre public","question":"Déchets :","options":[{"id":"A","text":"Tout brûler"},{"id":"B","text":"Tout jeter dans la rue"},{"id":"C","text":"Ne pas trier"},{"id":"D","text":"Ils doivent être triés et traités correctement"}],"answer":"D","id":"q3-38"}]},{"id":4,"title":"Histoire, Géographie et Culture françaises","themes":["Histoire de France","Géographie de la France","Culture et patrimoine français"],"count":49,"questions":[{"number":1,"theme":"Histoire de France","question":"Quel était le surnom de Louis XIV ?","options":[{"id":"A","text":"Le Roi des Pauvres"},{"id":"B","text":"Le Roi des Révolutions"},{"id":"C","text":"Le Roi de Fer"},{"id":"D","text":"Le Roi Soleil"}],"answer":"D","id":"q4-1"},{"number":2,"theme":"Histoire de France","question":"Quel roi de France a été exécuté pendant la Révolution ?","options":[{"id":"A","text":"Louis XV"},{"id":"B","text":"Louis XIII"},{"id":"C","text":"Louis XIV"},{"id":"D","text":"Louis XVI"}],"answer":"D","id":"q4-2"},{"number":3,"theme":"Histoire de France","question":"En quelle année Napoléon Ier est-il devenu empereur ?","options":[{"id":"A","text":"1789"},{"id":"B","text":"1815"},{"id":"C","text":"1799"},{"id":"D","text":"1804"}],"answer":"D","id":"q4-3"},{"number":4,"theme":"Histoire de France","question":"Personnage lié à la République française :","options":[{"id":"A","text":"Jules César"},{"id":"B","text":"Charlemagne"},{"id":"C","text":"Louis XIV"},{"id":"D","text":"Marianne"}],"answer":"D","id":"q4-4"},{"number":5,"theme":"Histoire de France","question":"Appel à la résistance de De Gaulle :","options":[{"id":"A","text":"1935"},{"id":"B","text":"1950"},{"id":"C","text":"1918"},{"id":"D","text":"18 juin 1940"}],"answer":"D","id":"q4-5"},{"number":6,"theme":"Histoire de France","question":"Pourquoi étudie-t-on la Shoah ?","options":[{"id":"A","text":"Pour l’oublier"},{"id":"B","text":"Pour la célébrer"},{"id":"C","text":"Pour éviter les guerres économiques"},{"id":"D","text":"Pour comprendre et ne pas oublier les crimes contre l’humanité"}],"answer":"D","id":"q4-6"},{"number":7,"theme":"Histoire de France","question":"Pays colonisé par la France :","options":[{"id":"A","text":"Japon"},{"id":"B","text":"Italie"},{"id":"C","text":"Espagne"},{"id":"D","text":"Algérie"}],"answer":"D","id":"q4-7"},{"number":8,"theme":"Histoire de France","question":"Suffrage universel direct pour élire le président :","options":[{"id":"A","text":"1880"},{"id":"B","text":"2000"},{"id":"C","text":"1789"},{"id":"D","text":"Depuis 1962"}],"answer":"D","id":"q4-8"},{"number":9,"theme":"Histoire de France","question":"Première étape de la construction européenne (1951) :","options":[{"id":"A","text":"Création de l’ONU"},{"id":"B","text":"Fin de la guerre froide"},{"id":"C","text":"Création de l’euro"},{"id":"D","text":"CECA (Communauté européenne du charbon et de l’acier)"}],"answer":"D","id":"q4-9"},{"number":10,"theme":"Histoire de France","question":"Président sous lequel la peine de mort est abolie :","options":[{"id":"A","text":"Nicolas Sarkozy"},{"id":"B","text":"Charles de Gaulle"},{"id":"C","text":"Georges Pompidou"},{"id":"D","text":"François Mitterrand"}],"answer":"D","id":"q4-10"},{"number":11,"theme":"Histoire de France","question":"Régime en 1792 :","options":[{"id":"A","text":"Monarchie constitutionnelle"},{"id":"B","text":"Empire"},{"id":"C","text":"Dictature militaire"},{"id":"D","text":"République"}],"answer":"D","id":"q4-11"},{"number":12,"theme":"Histoire de France","question":"Résistant français :","options":[{"id":"A","text":"Jules Verne"},{"id":"B","text":"Louis Pasteur"},{"id":"C","text":"Louis XIV"},{"id":"D","text":"Jean Moulin"}],"answer":"D","id":"q4-12"},{"number":13,"theme":"Histoire de France","question":"En 1944 pour les femmes :","options":[{"id":"A","text":"Elles perdent le droit de vote"},{"id":"B","text":"Elles deviennent soldats obligatoires"},{"id":"C","text":"Elles obtiennent le droit de travailler uniquement"},{"id":"D","text":"Elles obtiennent le droit de vote"}],"answer":"D","id":"q4-13"},{"number":14,"theme":"Histoire de France","question":"Organisation créée en 1945 :","options":[{"id":"A","text":"Union européenne"},{"id":"B","text":"OTAN"},{"id":"C","text":"FMI uniquement"},{"id":"D","text":"ONU"}],"answer":"D","id":"q4-14"},{"number":15,"theme":"Histoire de France","question":"Peine supprimée en 1981 :","options":[{"id":"A","text":"Travaux forcés"},{"id":"B","text":"Prison à vie"},{"id":"C","text":"Amendes"},{"id":"D","text":"Peine de mort"}],"answer":"D","id":"q4-15"},{"number":16,"theme":"Histoire de France","question":"Euro utilisé en France depuis :","options":[{"id":"A","text":"1990"},{"id":"B","text":"2010"},{"id":"C","text":"1980"},{"id":"D","text":"2002"}],"answer":"D","id":"q4-16"},{"number":17,"theme":"Histoire de France","question":"Début de la Première Guerre mondiale :","options":[{"id":"A","text":"1939"},{"id":"B","text":"1912"},{"id":"C","text":"1945"},{"id":"D","text":"1914"}],"answer":"D","id":"q4-17"},{"number":18,"theme":"Histoire de France","question":"Débarquement de 1944 :","options":[{"id":"A","text":"Marseille uniquement"},{"id":"B","text":"Berlin"},{"id":"C","text":"Italie"},{"id":"D","text":"Normandie"}],"answer":"D","id":"q4-18"},{"number":19,"theme":"Histoire de France","question":"Continent concerné par la décolonisation française :","options":[{"id":"A","text":"Europe"},{"id":"B","text":"Océanie"},{"id":"C","text":"Amérique"},{"id":"D","text":"Afrique"}],"answer":"D","id":"q4-19"},{"number":20,"theme":"Histoire de France","question":"Que fête-t-on le 8 mai ?","options":[{"id":"A","text":"Fin de la guerre d’Algérie"},{"id":"B","text":"Fête nationale française"},{"id":"C","text":"Noël"},{"id":"D","text":"Fin de la Seconde Guerre mondiale en Europe"}],"answer":"D","id":"q4-20"},{"number":21,"theme":"Géographie de la France","question":"Mer/océan de la France métropolitaine :","options":[{"id":"A","text":"Mer Rouge"},{"id":"B","text":"Mer Noire"},{"id":"C","text":"Mer Caspienne"},{"id":"D","text":"Océan Atlantique"}],"answer":"D","id":"q4-21"},{"number":22,"theme":"Géographie de la France","question":"Pays frontalier de la France :","options":[{"id":"A","text":"Portugal"},{"id":"B","text":"Grèce"},{"id":"C","text":"Irlande"},{"id":"D","text":"Allemagne"}],"answer":"D","id":"q4-22"},{"number":23,"theme":"Géographie de la France","question":"Ville port maritime :","options":[{"id":"A","text":"Lyon"},{"id":"B","text":"Paris"},{"id":"C","text":"Strasbourg"},{"id":"D","text":"Marseille"}],"answer":"D","id":"q4-23"},{"number":24,"theme":"Géographie de la France","question":"Mer entre France et Angleterre :","options":[{"id":"A","text":"Mer Rouge"},{"id":"B","text":"Mer du Nord uniquement"},{"id":"C","text":"Mer Adriatique"},{"id":"D","text":"Manche"}],"answer":"D","id":"q4-24"},{"number":25,"theme":"Géographie de la France","question":"France d’outre-mer :","options":[{"id":"A","text":"Régions espagnoles"},{"id":"B","text":"Pays indépendants"},{"id":"C","text":"Régions en Europe"},{"id":"D","text":"Territoires français hors Europe"}],"answer":"D","id":"q4-25"},{"number":26,"theme":"Géographie de la France","question":"Chaîne de montagnes France/Espagne :","options":[{"id":"A","text":"Alpes"},{"id":"B","text":"Jura"},{"id":"C","text":"Massif central"},{"id":"D","text":"Pyrénées"}],"answer":"D","id":"q4-26"},{"number":27,"theme":"Géographie de la France","question":"Île française dans l’océan Indien :","options":[{"id":"A","text":"Martinique"},{"id":"B","text":"Guadeloupe"},{"id":"C","text":"Tahiti"},{"id":"D","text":"La Réunion"}],"answer":"D","id":"q4-27"},{"number":28,"theme":"Géographie de la France","question":"Population France 2025 :","options":[{"id":"A","text":"10 millions"},{"id":"B","text":"150 millions"},{"id":"C","text":"50 millions"},{"id":"D","text":"Environ 68 millions"}],"answer":"D","id":"q4-28"},{"number":29,"theme":"Géographie de la France","question":"Fleuve de Paris :","options":[{"id":"A","text":"Loire"},{"id":"B","text":"Rhône"},{"id":"C","text":"Garonne"},{"id":"D","text":"Seine"}],"answer":"D","id":"q4-29"},{"number":30,"theme":"Géographie de la France","question":"Pays frontalier de la France :","options":[{"id":"A","text":"Portugal"},{"id":"B","text":"Maroc"},{"id":"C","text":"Égypte"},{"id":"D","text":"Espagne"}],"answer":"D","id":"q4-30"},{"number":31,"theme":"Géographie de la France","question":"Frontière nord-est :","options":[{"id":"A","text":"Italie"},{"id":"B","text":"Portugal"},{"id":"C","text":"Espagne"},{"id":"D","text":"Allemagne"}],"answer":"D","id":"q4-31"},{"number":32,"theme":"Géographie de la France","question":"Où se trouvent les principales activités économiques en France ?","options":[{"id":"A","text":"Dans le désert uniquement"},{"id":"B","text":"Dans les zones rurales isolées"},{"id":"C","text":"Dans les montagnes uniquement"},{"id":"D","text":"Dans les grandes villes et métropoles"}],"answer":"D","id":"q4-32"},{"number":33,"theme":"Géographie de la France","question":"Pays le plus visité :","options":[{"id":"A","text":"États-Unis"},{"id":"B","text":"Chine"},{"id":"C","text":"Italie"},{"id":"D","text":"France"}],"answer":"D","id":"q4-33"},{"number":34,"theme":"Géographie de la France","question":"Où vit la majorité des Français :","options":[{"id":"A","text":"Déserts"},{"id":"B","text":"Zones rurales isolées"},{"id":"C","text":"Montagnes"},{"id":"D","text":"Zones urbaines"}],"answer":"D","id":"q4-34"},{"number":35,"theme":"Géographie de la France","question":"Région la plus peuplée :","options":[{"id":"A","text":"Bretagne"},{"id":"B","text":"Corse"},{"id":"C","text":"Centre-Val de Loire"},{"id":"D","text":"Île-de-France"}],"answer":"D","id":"q4-35"},{"number":36,"theme":"Géographie de la France","question":"Grande métropole française :","options":[{"id":"A","text":"Nice"},{"id":"B","text":"Brest"},{"id":"C","text":"Dijon"},{"id":"D","text":"Paris"}],"answer":"D","id":"q4-36"},{"number":37,"theme":"Géographie de la France","question":"Département le plus touristique :","options":[{"id":"A","text":"Creuse"},{"id":"B","text":"Ardennes"},{"id":"C","text":"Aveyron"},{"id":"D","text":"Alpes-Maritimes"}],"answer":"D","id":"q4-37"},{"number":38,"theme":"Culture et patrimoine français","question":"Gratuité des lieux culturels :","options":[{"id":"A","text":"Jamais"},{"id":"B","text":"Tous les jours"},{"id":"C","text":"Seulement pour les touristes"},{"id":"D","text":"Certains jours gratuits (ex : 1er dimanche du mois)"}],"answer":"D","id":"q4-38"},{"number":39,"theme":"Culture et patrimoine français","question":"Nombre de francophones dans le monde :","options":[{"id":"A","text":"10 millions"},{"id":"B","text":"50 millions"},{"id":"C","text":"100 millions"},{"id":"D","text":"Environ 320 millions"}],"answer":"D","id":"q4-39"},{"number":40,"theme":"Culture et patrimoine français","question":"Marguerite Yourcenar :","options":[{"id":"A","text":"Peintre impressionniste"},{"id":"B","text":"Chanteuse"},{"id":"C","text":"Politicienne"},{"id":"D","text":"Écrivaine française"}],"answer":"D","id":"q4-40"},{"number":41,"theme":"Culture et patrimoine français","question":"Peintre français :","options":[{"id":"A","text":"Beethoven"},{"id":"B","text":"Picasso (espagnol)"},{"id":"C","text":"Van Gogh (néerlandais)"},{"id":"D","text":"Claude Monet"}],"answer":"D","id":"q4-41"},{"number":42,"theme":"Culture et patrimoine français","question":"Musée à Paris :","options":[{"id":"A","text":"Musée du Prado"},{"id":"B","text":"British Museum"},{"id":"C","text":"Louvre Abu Dhabi"},{"id":"D","text":"Musée du Louvre"}],"answer":"D","id":"q4-42"},{"number":43,"theme":"Culture et patrimoine français","question":"Auguste Rodin :","options":[{"id":"A","text":"Scientifique"},{"id":"B","text":"Chanteur"},{"id":"C","text":"Président"},{"id":"D","text":"Sculpteur français"}],"answer":"D","id":"q4-43"},{"number":44,"theme":"Culture et patrimoine français","question":"Classement du français :","options":[{"id":"A","text":"20e langue"},{"id":"B","text":"50e langue"},{"id":"C","text":"100e langue"},{"id":"D","text":"5e langue la plus parlée environ"}],"answer":"D","id":"q4-44"},{"number":45,"theme":"Culture et patrimoine français","question":"Cathédrale incendiée en 2019 :","options":[{"id":"A","text":"Sacré-Cœur"},{"id":"B","text":"Notre-Dame de Reims"},{"id":"C","text":"Saint-Pierre de Rome"},{"id":"D","text":"Notre-Dame de Paris"}],"answer":"D","id":"q4-45"},{"number":46,"theme":"Culture et patrimoine français","question":"Écrivaine française célèbre :","options":[{"id":"A","text":"Simone Veil (même si politique aussi)"},{"id":"B","text":"Victor Hugo"},{"id":"C","text":"Albert Camus"},{"id":"D","text":"George Sand"}],"answer":"D","id":"q4-46"},{"number":47,"theme":"Culture et patrimoine français","question":"Musicien français célèbre :","options":[{"id":"A","text":"Mozart"},{"id":"B","text":"Beethoven"},{"id":"C","text":"Bach"},{"id":"D","text":"Claude Debussy"}],"answer":"D","id":"q4-47"},{"number":48,"theme":"Culture et patrimoine français","question":"Auguste Renoir :","options":[{"id":"A","text":"Philosophe"},{"id":"B","text":"Écrivain"},{"id":"C","text":"Sculpteur"},{"id":"D","text":"Peintre impressionniste"}],"answer":"D","id":"q4-48"},{"number":49,"theme":"Culture et patrimoine français","question":"Fête française :","options":[{"id":"A","text":"Thanksgiving"},{"id":"B","text":"Halloween"},{"id":"C","text":"Pâques uniquement américaine"},{"id":"D","text":"14 juillet"}],"answer":"D","id":"q4-49"}]},{"id":5,"title":"Vivre dans la société française","themes":["Vie familiale et démarches administratives","Santé et protection sociale","Travail et emploi","École et éducation"],"count":32,"questions":[{"number":1,"theme":"Vie familiale et démarches administratives","question":"Quel mariage est reconnu par l’État ?","options":[{"id":"A","text":"Mariage religieux uniquement"},{"id":"B","text":"Mariage traditionnel sans déclaration"},{"id":"C","text":"Mariage coutumier non déclaré"},{"id":"D","text":"Mariage civil célébré à la mairie"}],"answer":"D","id":"q5-1"},{"number":2,"theme":"Vie familiale et démarches administratives","question":"Où inscrire un enfant à l’école publique ?","options":[{"id":"A","text":"À la préfecture"},{"id":"B","text":"À la CAF"},{"id":"C","text":"À la police municipale"},{"id":"D","text":"À la mairie"}],"answer":"D","id":"q5-2"},{"number":3,"theme":"Vie familiale et démarches administratives","question":"En cas de divorce, l’autorité parentale est :","options":[{"id":"A","text":"Supprimée"},{"id":"B","text":"Donnée à l’État"},{"id":"C","text":"Retirée automatiquement au père"},{"id":"D","text":"Exercée conjointement par les parents (sauf décision contraire)"}],"answer":"D","id":"q5-3"},{"number":4,"theme":"Vie familiale et démarches administratives","question":"Aide pour avoir un avocat :","options":[{"id":"A","text":"Prime scolaire"},{"id":"B","text":"RSA uniquement"},{"id":"C","text":"Assurance retraite"},{"id":"D","text":"Aide juridictionnelle"}],"answer":"D","id":"q5-4"},{"number":5,"theme":"Vie familiale et démarches administratives","question":"Déclarer une naissance :","options":[{"id":"A","text":"À la police"},{"id":"B","text":"À l’hôpital uniquement"},{"id":"C","text":"À la CAF"},{"id":"D","text":"À la mairie"}],"answer":"D","id":"q5-5"},{"number":6,"theme":"Vie familiale et démarches administratives","question":"Condition pour le permis de conduire :","options":[{"id":"A","text":"Avoir un travail"},{"id":"B","text":"Être parent"},{"id":"C","text":"Être propriétaire"},{"id":"D","text":"Avoir l’âge requis"}],"answer":"D","id":"q5-6"},{"number":7,"theme":"Vie familiale et démarches administratives","question":"Un bail locatif valide doit être :","options":[{"id":"A","text":"Oral uniquement"},{"id":"B","text":"Sans signature"},{"id":"C","text":"Secret"},{"id":"D","text":"Écrit et signé"}],"answer":"D","id":"q5-7"},{"number":8,"theme":"Vie familiale et démarches administratives","question":"Où jeter un lave-vaisselle cassé ?","options":[{"id":"A","text":"Dans la rue"},{"id":"B","text":"Dans la forêt"},{"id":"C","text":"Dans la rivière"},{"id":"D","text":"À la déchetterie"}],"answer":"D","id":"q5-8"},{"number":9,"theme":"Vie familiale et démarches administratives","question":"Numéro de la police :","options":[{"id":"A","text":"911"},{"id":"B","text":"18"},{"id":"C","text":"112 uniquement pour incendie"},{"id":"D","text":"17"}],"answer":"D","id":"q5-9"},{"number":10,"theme":"Vie familiale et démarches administratives","question":"Accès aux soins :","options":[{"id":"A","text":"Réservé aux riches"},{"id":"B","text":"Interdit aux étrangers"},{"id":"C","text":"Payant uniquement sans exception"},{"id":"D","text":"Possible pour tous, avec prise en charge selon situation"}],"answer":"D","id":"q5-10"},{"number":11,"theme":"Santé et protection sociale","question":"La contraception est accessible :","options":[{"id":"A","text":"Uniquement aux hommes"},{"id":"B","text":"Uniquement aux mineurs"},{"id":"C","text":"Uniquement aux couples mariés"},{"id":"D","text":"À toute personne"}],"answer":"D","id":"q5-11"},{"number":12,"theme":"Santé et protection sociale","question":"Confidentialité médicale :","options":[{"id":"A","text":"Le médecin peut tout dire à tout le monde"},{"id":"B","text":"Les infos sont publiques"},{"id":"C","text":"Les infos sont partagées librement"},{"id":"D","text":"Les informations de santé sont protégées"}],"answer":"D","id":"q5-12"},{"number":13,"theme":"Santé et protection sociale","question":"Assurance maladie :","options":[{"id":"A","text":"Facultative et interdite"},{"id":"B","text":"Réservée aux touristes"},{"id":"C","text":"Réservée aux entreprises"},{"id":"D","text":"Obligatoire pour les résidents"}],"answer":"D","id":"q5-13"},{"number":14,"theme":"Santé et protection sociale","question":"Congé parental :","options":[{"id":"A","text":"Réservé aux pères uniquement"},{"id":"B","text":"Réservé aux enfants majeurs"},{"id":"C","text":"Interdit en France"},{"id":"D","text":"Possible pour les parents salariés"}],"answer":"D","id":"q5-14"},{"number":15,"theme":"Travail et emploi","question":"Conseil de prud’hommes :","options":[{"id":"A","text":"Litiges entre voisins"},{"id":"B","text":"Crimes pénaux"},{"id":"C","text":"Questions scolaires"},{"id":"D","text":"Conflits entre employeur et salarié"}],"answer":"D","id":"q5-15"},{"number":16,"theme":"Travail et emploi","question":"Travail non déclaré :","options":[{"id":"A","text":"Obligatoire"},{"id":"B","text":"Encouragé"},{"id":"C","text":"Fiscalement neutre"},{"id":"D","text":"Illégal"}],"answer":"D","id":"q5-16"},{"number":17,"theme":"Travail et emploi","question":"Heures supplémentaires imposées :","options":[{"id":"A","text":"Toujours interdites"},{"id":"B","text":"Jamais possibles"},{"id":"C","text":"Toujours facultatives sans accord"},{"id":"D","text":"Possibles selon règles légales"}],"answer":"D","id":"q5-17"},{"number":18,"theme":"Travail et emploi","question":"France Travail :","options":[{"id":"A","text":"Gérer les impôts"},{"id":"B","text":"Gérer la justice"},{"id":"C","text":"Gérer les écoles"},{"id":"D","text":"Aider les demandeurs d’emploi"}],"answer":"D","id":"q5-18"},{"number":19,"theme":"Travail et emploi","question":"Droit syndical :","options":[{"id":"A","text":"Interdire les salariés de parler"},{"id":"B","text":"Supprimer les droits des employés"},{"id":"C","text":"Interdire les associations"},{"id":"D","text":"Permet de se défendre collectivement"}],"answer":"D","id":"q5-19"},{"number":20,"theme":"Travail et emploi","question":"Droit de grève :","options":[{"id":"A","text":"Obligation de travailler plus"},{"id":"B","text":"Interdiction de manifester"},{"id":"C","text":"Sanction automatique"},{"id":"D","text":"Cesser le travail pour revendications"}],"answer":"D","id":"q5-20"},{"number":21,"theme":"Travail et emploi","question":"Conditions pour chômage :","options":[{"id":"A","text":"Être étudiant"},{"id":"B","text":"Être retraité"},{"id":"C","text":"Ne jamais avoir travaillé"},{"id":"D","text":"Avoir travaillé et perdu son emploi involontairement"}],"answer":"D","id":"q5-21"},{"number":22,"theme":"École et éducation","question":"École maternelle :","options":[{"id":"A","text":"Université"},{"id":"B","text":"École privée obligatoire"},{"id":"C","text":"Centre de formation adulte"},{"id":"D","text":"Première école pour jeunes enfants"}],"answer":"D","id":"q5-22"},{"number":23,"theme":"École et éducation","question":"Diplôme fin de collège :","options":[{"id":"A","text":"Baccalauréat"},{"id":"B","text":"Licence"},{"id":"C","text":"BTS"},{"id":"D","text":"Diplôme national du brevet"}],"answer":"D","id":"q5-23"},{"number":24,"theme":"École et éducation","question":"Parents d’élèves peuvent :","options":[{"id":"A","text":"Interdire les cours"},{"id":"B","text":"Modifier les notes"},{"id":"C","text":"Diriger l’école"},{"id":"D","text":"Participer à la vie scolaire"}],"answer":"D","id":"q5-24"},{"number":25,"theme":"École et éducation","question":"Qui peut manger à la cantine ?","options":[{"id":"A","text":"Uniquement les enseignants"},{"id":"B","text":"Personne"},{"id":"C","text":"Seulement les parents"},{"id":"D","text":"Tous les élèves inscrits"}],"answer":"D","id":"q5-25"},{"number":26,"theme":"École et éducation","question":"Début instruction obligatoire :","options":[{"id":"A","text":"10 ans"},{"id":"B","text":"7 ans"},{"id":"C","text":"5 ans"},{"id":"D","text":"3 ans"}],"answer":"D","id":"q5-26"},{"number":27,"theme":"École et éducation","question":"Majorité :","options":[{"id":"A","text":"16 ans"},{"id":"B","text":"21 ans"},{"id":"C","text":"15 ans"},{"id":"D","text":"18 ans"}],"answer":"D","id":"q5-27"},{"number":28,"theme":"École et éducation","question":"Interdit aux parents à l’école :","options":[{"id":"A","text":"Parler aux élèves"},{"id":"B","text":"Venir chercher leur enfant"},{"id":"C","text":"Participer aux réunions"},{"id":"D","text":"Intervenir dans les cours sans autorisation"}],"answer":"D","id":"q5-28"},{"number":29,"theme":"École et éducation","question":"Absence acceptée :","options":[{"id":"A","text":"Vacances non autorisées"},{"id":"B","text":"Journée shopping"},{"id":"C","text":"Sport sans justification"},{"id":"D","text":"Maladie avec justificatif"}],"answer":"D","id":"q5-29"},{"number":30,"theme":"École et éducation","question":"Non-respect instruction obligatoire :","options":[{"id":"A","text":"Aucun risque"},{"id":"B","text":"Félicitation"},{"id":"C","text":"Prime"},{"id":"D","text":"Amende et sanctions possibles"}],"answer":"D","id":"q5-30"},{"number":31,"theme":"École et éducation","question":"Vacances de Noël :","options":[{"id":"A","text":"Juin"},{"id":"B","text":"Septembre"},{"id":"C","text":"Avril"},{"id":"D","text":"Décembre"}],"answer":"D","id":"q5-31"},{"number":32,"theme":"École et éducation","question":"Élève en situation de handicap :","options":[{"id":"A","text":"Exclu de l’école"},{"id":"B","text":"École interdite"},{"id":"C","text":"École réservée spéciale uniquement"},{"id":"D","text":"Accueilli et accompagné à l’école"}],"answer":"D","id":"q5-32"}]}]};
+const $ = s => document.querySelector(s);
+const app = $("#app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const ALL = DATA.quizzes.flatMap(z => z.questions.map(q => ({ ...q, quiz: z.id })));
+const tkey = q => q.quiz + "|" + q.theme;
+let S = null;               // état du quiz en cours
+let prefs = { mode: "train", n: "all", off: new Set() }; // off = thèmes décochés
 
- function loadDraggable(containers) {
- 
-  //const containers = $('#UniqueDropzone').get();
-  const droppable = new Draggable.Droppable(containers, {
-    draggable: '.Block--isDraggable',
-    dropzone: '.BlockWrapper--isDropzone',
-    mirror: {
-      constrainDimensions: false,
-    },
-  });
-
-  let droppableOrigin;
-  let baliseOrigin;
-  // --- Draggable events --- //
-  droppable.on('drag:start', (evt) => {
-    droppableOrigin = evt.originalSource.parentNode.dataset.dropzone;
-	baliseOrigin = evt.originalSource.parentNode;
-  });
-
-  droppable.on('droppable:dropped', (evt) => {
-
-	if (!droppableOrigin.split(";").includes(evt.dropzone.dataset.dropzone)) {
-      evt.cancel();
-    } else {
-    //$(baliseOrigin).remove(); 
-}	
-  });
-  
-    droppable.on('drag:stop', (evt) => {
-	
-	if (evt.data.originalSource.parentNode.childElementCount == 2) {
-	    $(baliseOrigin).remove(); 
-			var $el = $( '#baraja-el' ),
-					baraja = $el.baraja();
-		baraja.itemsCount -= 1;
-	}
-	
-
-  });
-  
+/* ---------- Accueil ---------- */
+function home() {
+  S = null;
+  const count = k => ALL.filter(q => tkey(q) === k).length;
+  const groups = DATA.quizzes.map(z => `
+    <fieldset><legend>${esc(z.title)}</legend>
+      ${z.themes.map(t => { const k = z.id + "|" + t; return `
+      <label><input type="checkbox" data-k="${esc(k)}" ${prefs.off.has(k) ? "" : "checked"}>
+        <span>${esc(t)}</span><span class="count">${count(k)}</span></label>`; }).join("")}
+    </fieldset>`).join("");
+  app.innerHTML = `
+    <h1>Entraînement à l'examen civique</h1>
+    <p class="sub">${DATA.total} questions. Choisis tes thèmes, puis lance une série.</p>
+    <div class="mini">
+      <button class="link" id="all">Tout cocher</button><button class="link" id="none">Tout décocher</button>
+    </div>
+    ${groups}
+    <div class="row">
+      <fieldset><legend>Mode</legend>
+        <label><input type="radio" name="mode" value="train" ${prefs.mode === "train" ? "checked" : ""}><span>Entraînement : correction après chaque question</span></label>
+        <label><input type="radio" name="mode" value="exam" ${prefs.mode === "exam" ? "checked" : ""}><span>Examen : correction à la fin</span></label>
+      </fieldset>
+      <fieldset><legend>Nombre de questions</legend>
+        <select id="n">${["10", "20", "40", "all"].map(v => `<option value="${v}" ${prefs.n === v ? "selected" : ""}>${v === "all" ? "Toutes" : v}</option>`).join("")}</select>
+      </fieldset>
+    </div>
+    <button class="btn" id="go"></button>`;
+  const refresh = () => {
+    prefs.off = new Set([...app.querySelectorAll("[data-k]")].filter(c => !c.checked).map(c => c.dataset.k));
+    prefs.mode = app.querySelector("[name=mode]:checked").value;
+    prefs.n = $("#n").value;
+    const pool = ALL.filter(q => !prefs.off.has(tkey(q))).length;
+    const k = prefs.n === "all" ? pool : Math.min(+prefs.n, pool);
+    $("#go").textContent = pool ? `Commencer (${k} question${k > 1 ? "s" : ""})` : "Choisis au moins un thème";
+    $("#go").disabled = !pool;
+  };
+  app.onchange = refresh;
+  $("#all").onclick = () => { app.querySelectorAll("[data-k]").forEach(c => c.checked = true); refresh(); };
+  $("#none").onclick = () => { app.querySelectorAll("[data-k]").forEach(c => c.checked = false); refresh(); };
+  $("#go").onclick = () => start(ALL.filter(q => !prefs.off.has(tkey(q))), prefs.n);
+  refresh();
 }
 
+/* ---------- Quiz ---------- */
+function start(pool, n) {
+  let qs = shuffle(pool);
+  if (n !== "all") qs = qs.slice(0, +n);
+  qs = qs.map(q => ({ ...q, options: shuffle(q.options) })); // les ids restent liés à la bonne réponse
+  S = { qs, i: 0, picks: [], mode: prefs.mode, locked: false };
+  question();
+}
+
+function question() {
+  const q = S.qs[S.i], total = S.qs.length, train = S.mode === "train";
+  app.innerHTML = `
+    <div class="meta"><span>Question ${S.i + 1} / ${total}</span><span>${esc(q.theme)}</span></div>
+    <div class="bar"><i style="width:${(S.i / total) * 100}%"></i></div>
+    <h2>${esc(q.question)}</h2>
+    <div id="opts">${q.options.map((o, k) => `
+      <button class="opt" data-id="${o.id}"><b>${"ABCD"[k]}</b><span>${esc(o.text)}</span></button>`).join("")}</div>
+    <div class="fb" id="fb" aria-live="polite"></div>
+    <div class="actions"><button class="btn" id="next" disabled>${S.i + 1 === total ? "Voir le résultat" : "Question suivante"}</button>
+      <button class="btn ghost" id="quit">Abandonner</button></div>`;
+  S.locked = false; S.cur = null;
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => pick(b.dataset.id));
+  $("#next").onclick = next;
+  $("#quit").onclick = () => confirm("Abandonner cette série ?") && home();
+}
+
+function pick(id) {
+  if (S.locked) return;
+  const q = S.qs[S.i], train = S.mode === "train";
+  S.cur = id;
+  const btns = app.querySelectorAll(".opt");
+  if (train) {
+    S.locked = true;
+    const good = id === q.answer;
+    btns.forEach(b => { b.disabled = true; if (b.dataset.id === q.answer) b.classList.add("ok"); else if (b.dataset.id === id) b.classList.add("ko"); });
+    const fb = $("#fb");
+    fb.className = "fb " + (good ? "ok" : "ko");
+    fb.textContent = good ? "Bonne réponse." : "Mauvaise réponse. La bonne réponse est surlignée en vert.";
+  } else {
+    btns.forEach(b => b.classList.toggle("sel", b.dataset.id === id));
+  }
+  $("#next").disabled = false;
+  $("#next").focus();
+}
+
+function next() {
+  if (S.cur == null) return;
+  S.picks[S.i] = S.cur;
+  if (++S.i < S.qs.length) question(); else result();
+}
+
+/* ---------- Résultat ---------- */
+function result() {
+  const total = S.qs.length;
+  const wrong = S.qs.filter((q, i) => S.picks[i] !== q.answer);
+  const good = total - wrong.length, pct = Math.round(good / total * 100);
+  const txt = (q, id) => esc((q.options.find(o => o.id === id) || {}).text || "");
+  app.innerHTML = `
+    <h1>Résultat</h1>
+    <div class="score">${good} / ${total}</div>
+    <p class="sub">${pct} % de bonnes réponses.${wrong.length ? "" : " Aucune erreur, bravo."}</p>
+    ${wrong.length ? `<h2>À revoir (${wrong.length})</h2>` : ""}
+    ${wrong.map(q => `<div class="err"><p><strong>${esc(q.question)}</strong></p>
+      <p class="bad">Ta réponse : ${txt(q, S.picks[S.qs.indexOf(q)])}</p>
+      <p class="good">Bonne réponse : ${txt(q, q.answer)}</p></div>`).join("")}
+    <div class="actions">
+      ${wrong.length ? `<button class="btn" id="redo">Refaire mes erreurs</button>` : ""}
+      <button class="btn ${wrong.length ? "ghost" : ""}" id="home">Nouvelle série</button></div>`;
+  $("#home").onclick = home;
+  if (wrong.length) $("#redo").onclick = () => start(wrong.map(({ options, ...q }) => ALL.find(a => a.id === q.id)), "all");
+}
+
+/* ---------- Clavier : A-D ou 1-4 pour répondre, Entrée pour continuer ---------- */
+document.addEventListener("keydown", e => {
+  if (!S || !app.querySelector(".opt") || e.ctrlKey || e.metaKey) return;
+  const k = "abcd1234".indexOf(e.key.toLowerCase());
+  if (k >= 0) { const b = app.querySelectorAll(".opt")[k % 4]; if (b && !b.disabled) pick(b.dataset.id); }
+  else if (e.key === "Enter" && !$("#next").disabled && document.activeElement.tagName !== "BUTTON") next();
+});
+
+home();
 </script>
-	</body>
+</body>
 </html>
